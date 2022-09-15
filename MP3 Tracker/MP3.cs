@@ -3,7 +3,7 @@
          //                                                                                                     //
         // Project: MP3 Tracker                                                                                //
        // File Name: Project1MP3                                                                              //
-      // Description:                                                                                        //
+      // Description: This is where all the information the user inputs into the MP3 Driver is stored        //
      // Course: CSCI 1260 – Introduction to Computer Science II                                             //
     // Author: Scotty Snyder, snyderds@etsu.edu, Department of Computing, East Tennessee State University  //
    // Created: Thursday, September 7, 2022                                                                //
@@ -13,29 +13,53 @@
 
 namespace MP3_Tracker
 {
+    /// <summary>
+    /// A class that holds all the information related to the MP3 a user input
+    /// </summary>
     public class MP3
     {
-        public string Title { get; set; }
-        public string Artist { get; set; }
-        public string ReleaseDate { get; set; }
-        public double PlaybackTime { get; set; }
-        public Genre Genre { get; set; }
-        public decimal DownloadCost { get; set; }
-        public double FileSizeMB { get; set; }
+        /// <summary>
+        /// properties get and set the information about a song the user input such as: Title, Artist, Release date, 
+        /// Playback time, Genre, Download cost, File size, and the path for the album photo
+        /// </summary>
+        public string title { get; set; }
+        public string artist { get; set; }
+        public string releaseDate { get; set; }
+        public double playbackTime { get; set; }
+        public Genre genre { get; set; }
+        public decimal downloadCost { get; set; }
+        public double fileSizeMB { get; set; }
+        public string filePath { get; set; }
 
-        public string Path = "C:/Users/Scotty/Downloads/Funny_Monkey.jpg";
+        /// <summary>
+        /// default constructor initializes the MP3 so that the main method can tell if an MP3 has been made or not
+        /// </summary>
+        public MP3()
+        {
+            title = "";
+            artist = "";
+            releaseDate = "";
+            playbackTime = 0;
+            genre = new Genre();
+            downloadCost = 0;
+            fileSizeMB = 0;
+            filePath = "";
+        }
 
-
+        /// <summary>
+        /// ToString method converts everything into a string so it can be called in the main method
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             string info = "";
 
-            info += $"MP3 Title: {Title}";
-            info += $"Artist: {Artist}";
-            info += $"Release Date: {ReleaseDate}           Genre:{Genre}";
-            info += $"Download Cost: {DownloadCost}         File Size: {FileSizeMB}";
-            info += $"Playback Time: {PlaybackTime}         Album Photo: {Path}";
-
+            info += $"\nMP3 Title: {title}";
+            info += $"\nArtist: {artist}";
+            info += $"\nRelease Date: {releaseDate}                                  Genre:{genre}";
+            info += $"\nDownload Cost: ${downloadCost}                               File Size: {fileSizeMB}";
+            info += $"\nPlayback Time: {Math.Round(playbackTime/60, 2)} Mins         Album Photo: {filePath}";
+            
             return info;
         }
     }
