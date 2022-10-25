@@ -1,4 +1,17 @@
-﻿using System;
+﻿           /////////////////////////////////////////////////////////////////////////////////////////////////////////
+          //                                                                                                     //
+         //                                                                                                     //
+        // Project: MP3 Tracker                                                                                //
+       // File Name: Genre                                                                                    //
+      // Description:                                                                                        //
+     // Course: CSCI 1260 – Introduction to Computer Science II                                             //
+    // Author: Scotty Snyder, snyderds@etsu.edu, Department of Computing, East Tennessee State University  //
+   // Created: Thursday, September 7, 2022                                                                //
+  // Copyright: Scotty Snyder, 2022                                                                      //
+ //                                                                                                     //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

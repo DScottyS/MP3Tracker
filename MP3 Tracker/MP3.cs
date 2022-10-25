@@ -2,7 +2,7 @@
           //                                                                                                     //
          //                                                                                                     //
         // Project: MP3 Tracker                                                                                //
-       // File Name: Project1MP3                                                                              //
+       // File Name: MP                                                                              //
       // Description: This is where all the information the user inputs into the MP3 Driver is stored        //
      // Course: CSCI 1260 – Introduction to Computer Science II                                             //
     // Author: Scotty Snyder, snyderds@etsu.edu, Department of Computing, East Tennessee State University  //
