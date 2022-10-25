@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MP3_Tracker
 {
     /// <summary>
-    /// 
+    /// MP3 Driver class communicates with the user and the MP3 class
     /// </summary>
     public class MP3Driver
     {

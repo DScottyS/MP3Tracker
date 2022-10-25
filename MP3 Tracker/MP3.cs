@@ -49,7 +49,7 @@ namespace MP3_Tracker
         /// <summary>
         /// ToString method converts everything into a string so it can be called in the main method
         /// </summary>
-        /// <returns></returns>
+        /// <returns>string displaying the information the user input</returns>
         public override string ToString()
         {
             string info = "";
