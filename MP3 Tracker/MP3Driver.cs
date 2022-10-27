@@ -70,12 +70,16 @@ namespace MP3_Tracker
 
                 else if (choice == 4)
                 {
-                    EditSongInPlaylist();
+                    ShowPlaylist();
                 }
 
                 else if (choice == 5)
                 {
-                    ShowPlaylist();
+                    EditSongInPlaylist();
+                }
+                else if (choice == 6)
+                {
+                    RemoveFromPlaylist();
                 }
 
                 //if the user does not input a number between 1 and 13, prompts the user to input a number between 1 and 13
@@ -112,6 +116,8 @@ namespace MP3_Tracker
 
         static string editSong = "";
 
+        static int songToRemove;
+
         #endregion
 
         #region Methods
@@ -126,8 +132,8 @@ namespace MP3_Tracker
             "\n2. Display an MP3 file" +
             "\n3. Create a new Playlist" +
             "\n4. Display your playlist" +
-            "\n5. Edit a song in the plalist" +
-            "\n6. WIP" +
+            "\n5. Edit a song in the playlist" +
+            "\n6. Remove a song from the playlist" +
             "\n7. WIP" +
             "\n8. WIP" +
             "\n9. WIP" +
@@ -301,7 +307,7 @@ namespace MP3_Tracker
         /// </summary>
         public static void EditSongInPlaylist()
         {
-            Console.Write("please enter the number  of the song in the playlist you would like to edit: ");
+            Console.Write("Please enter the number  of the song in the playlist you would like to edit: ");
             int songNumber = Int32.Parse(Console.ReadLine());
             userPlaylist.ChooseSong(songNumber - 1);
 
@@ -363,7 +369,22 @@ namespace MP3_Tracker
 
         public static void RemoveFromPlaylist()
         {
+            try
+            {
+                do
+                {
+                    Console.Write("What is the numbered position of the song you would like to remove: ");
+                    songToRemove = Int32.Parse(Console.ReadLine());
 
+                    userPlaylist.RemoveSong(songToRemove - 1);
+                } while (songToRemove <= 0);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.WriteLine("invalid");
+            }
+
+            Menu();
         }
 
         /// <summary>

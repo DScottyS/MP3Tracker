@@ -54,10 +54,14 @@ namespace MP3_Tracker
             newPlaylist.Add(songToAdd);
         }
 
-
         public void ChooseSong(int songNum)
         {
             newPlaylist.ElementAt(songNum);
+        }
+
+        public void RemoveSong(int songNum)
+        {
+            newPlaylist.RemoveAt(songNum);
         }
 
         public override string ToString()
@@ -71,8 +75,9 @@ namespace MP3_Tracker
 
             for (int i = 0; i < newPlaylist.Count; i++)
             {
+                info += $"song #{i + 1}\n";
                 info += newPlaylist[i];
-                info += "\n\n";
+                info += $"\n\n";
             }
 
             return info;
