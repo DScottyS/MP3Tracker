@@ -21,7 +21,7 @@ namespace MP3_Tracker
 {
     internal class Playlist
     {
-        private List<MP3> newPlaylist = new List<MP3>();
+        private List<MP3> newPlaylist;
 
         public string playlistName { get; set; }
 
@@ -31,7 +31,7 @@ namespace MP3_Tracker
 
         public Playlist()
         {
-            newPlaylist = null;
+            newPlaylist = new List<MP3>();
             playlistName = "";
             playlistCreator = "";
             creationDate = new DateOnly(0001, 1, 1);
@@ -45,23 +45,37 @@ namespace MP3_Tracker
             this.creationDate = creationDate;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="songToAdd">Song being added to the playlist</param>
+        public void AddToPlaylist(MP3 songToAdd)
+        {
+            newPlaylist.Add(songToAdd);
+        }
 
+        /*public void DisplayPlaylist()
+        {
+            for (int i = 0; i < newPlaylist.Count; i++)
+            {
+                Console.WriteLine(newPlaylist[i]);
+            }
+        }*/
 
         public override string ToString()
         {
             string info = "";
 
-            info += "\n-----------------------------------------\n";
-            info += $"{playlistName} by {playlistCreator}";
-            info += $"created on {creationDate}";
-            info += "\n-----------------------------------------\n";
+            info += $"\n-----------------------------------------";
+            info += $"\n\n{playlistName} by {playlistCreator}";
+            info += $"\n\ncreated on {creationDate}";
+            info += $"\n\n-----------------------------------------\n\n";
 
             for (int i = 0; i < newPlaylist.Count; i++)
             {
                 info += newPlaylist[i];
+                info += "\n\n";
             }
-
-            info += "\n-----------------------------------------\n";
 
             return info;
         }
