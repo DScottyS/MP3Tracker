@@ -42,10 +42,10 @@ namespace MP3_Tracker
             userName = Console.ReadLine();
 
             //uses the menu method to display all options available to the user
-            Console.Write(Menu());
+            Menu();
 
             //Takes the number the user input so they can navigate the menu
-            choice = Int32.Parse(Console.ReadLine());
+            //choice = Int32.Parse(Console.ReadLine());
 
             //depending on what the user inputs, will either create a new MP3, display an existing MP3 (if possible)
             //or exit the program
@@ -66,6 +66,11 @@ namespace MP3_Tracker
                 else if (choice == 3)
                 {
                     CreateAPlaylist();
+                }
+
+                else if (choice == 4)
+                {
+                    EditSongInPlaylist();
                 }
 
                 else if (choice == 5)
@@ -97,42 +102,57 @@ namespace MP3_Tracker
 
         #region Attributes
         //creates a string for the user's name to be stored in
-        static string userName;
+        static string userName = "";
         //creates a variable that will hold the number corresponding to the choice the user inputs
         static int choice;
         //creates a new MP3 variable called newSong for the user to input information relating to their song into
         static MP3 newSong = new MP3();
         //creates a new playlist object so CreateANewSong method can tell if a playlist has been made
         static Playlist userPlaylist = new Playlist();
+
+        static string editSong = "";
+
         #endregion
 
         #region Methods
         /// <summary>
-        /// menu method simply displays all options the user can choose from
+        /// menu method displays all options the user can choose from and gives them a prompt to choose from them
         /// </summary>
-        /// <returns>returns a string that contains all menu choices</returns>
-        public static string Menu()
+        public static void Menu()
         {
-            string info = "";
+            
+            Console.Write("\n-----------------------------------------" +
+            "\n1. Create a new MP3 file" +
+            "\n2. Display an MP3 file" +
+            "\n3. Create a new Playlist" +
+            "\n4. Display your playlist" +
+            "\n5. Edit a song in the plalist" +
+            "\n6. WIP" +
+            "\n7. WIP" +
+            "\n8. WIP" +
+            "\n9. WIP" +
+            "\n10. WIP" +
+            "\n11. WIP" +
+            "\n12. WIP" +
+            "\n13. Terminate the program" +
+            "\n-----------------------------------------" +
+            "\n\nPlease type the number corresponding to what you would like to do: ");
 
-            info += "\n-----------------------------------------";
-            info += "\n1. Create a new MP3 file";
-            info += "\n2. Display an MP3 file";
-            info += "\n3. Create a new Playlist";
-            info += "\n4. WIP";
-            info += "\n5. Display your playlist";
-            info += "\n6. WIP";
-            info += "\n7. WIP";
-            info += "\n8. WIP";
-            info += "\n9. WIP";
-            info += "\n10. WIP";
-            info += "\n11. WIP";
-            info += "\n12. WIP";
-            info += "\n13. Terminate the program";
-            info += "\n-----------------------------------------";
-            info += "\n\nPlease type the number corresponding to what you would like to do: ";
-
-            return info;
+            do
+            {
+                try
+                {
+                    choice = Int32.Parse(Console.ReadLine());
+                }
+                catch (FormatException e)
+                {
+                    Console.WriteLine("choice is invalid");
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            } while (choice > 13 && choice <= 0);
         }
 
         /// <summary>
@@ -224,8 +244,8 @@ namespace MP3_Tracker
             }
 
             //displays the menu for the user after creating their MP3
-            Console.Write($"\nMP3 created successfully \n {Menu()}");
-            choice = Int32.Parse(Console.ReadLine());
+            Console.Write($"\nMP3 created successfully \n");
+            Menu();
         }
 
         /// <summary>
@@ -238,16 +258,14 @@ namespace MP3_Tracker
                 //if an MP3 does not currently exist, prompts the user to create a new one or close the program
                 if (newSong.title == "")
                 {
-                    Console.WriteLine($"\nThere is currently no existing MP3\n" +
-                                      $"{Menu()}");
-                    choice = Int32.Parse(Console.ReadLine());
+                    Console.WriteLine($"\nThere is currently no existing MP3\n");
+                    Menu();
                 }
                 //if an MP3 currently exists, displays that MP3
                 else
                 {
                     Console.WriteLine(newSong);
-                    Console.WriteLine(Menu());
-                    choice = Int32.Parse(Console.ReadLine());
+                    Menu();
                 }
             } while (choice > 13 || choice <= 0);
         }
@@ -273,15 +291,74 @@ namespace MP3_Tracker
                     Console.WriteLine("Invalid date");
                 }
             } while (userPlaylist.creationDate.ToString() == "1/1/0001");
-            
-            Console.Write(Menu());
-            choice = Int32.Parse(Console.ReadLine());
+
+            Menu();
 
         }
 
+        /// <summary>
+        /// asks the user to choose the numbered position of a song and allows them to edit that song
+        /// </summary>
         public static void EditSongInPlaylist()
         {
+            Console.Write("please enter the number  of the song in the playlist you would like to edit: ");
+            int songNumber = Int32.Parse(Console.ReadLine());
+            userPlaylist.ChooseSong(songNumber - 1);
 
+            do
+            {
+                try
+                {
+                    Console.Write("what would you like to edit? The choices are as follows:" +
+                        "\nTitle, Artist, Release Date (type Date), Genre, Download Cost (type Price), File Size (type size)," +
+                        "\nand File Path (type Path): ");
+                    editSong = Console.ReadLine().ToLower();
+                    Enum.Parse(typeof(EditSongChoice), editSong);
+
+                    switch (editSong)
+                    {
+                        case "title":
+                            Console.Write("What would you like to rename the song: ");
+                            newSong.title = Console.ReadLine();
+                            break;
+                        case "artist":
+                            Console.Write("What is the artist's name: ");
+                            newSong.artist = Console.ReadLine();
+                            break;
+                        case "date":
+                            Console.Write("When was the song released (MM/DD/YY): ");
+                            newSong.releaseDate = Console.ReadLine();
+                            break;
+                        case "genre":
+                            Console.Write("What is the genre of the song: ");
+                            newSong.genre = (Genre)Enum.Parse(typeof(Genre), Console.ReadLine().ToUpper());
+                            break;
+                        case "price":
+                            Console.Write("What is the price of the song: ");
+                            newSong.downloadCost = decimal.Parse(Console.ReadLine());
+                            break;
+                        case "size":
+                            Console.Write("What is the file size: ");
+                            newSong.fileSizeMB = double.Parse(Console.ReadLine());
+                            break;
+                        case "path":
+                            Console.Write("What is the file path: ");
+                            newSong.filePath = Console.ReadLine();
+                            break;
+                        default:
+                            Console.WriteLine("invalid choice");
+                            break;
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+                
+            } while (editSong != Enum.Parse(typeof(EditSongChoice), editSong));
+
+            Menu();
         }
 
         public static void RemoveFromPlaylist()
@@ -303,8 +380,7 @@ namespace MP3_Tracker
                 Console.WriteLine(userPlaylist.ToString());
             }
 
-            Console.Write(Menu());
-            choice = Int32.Parse(Console.ReadLine());
+            Menu();
         }
 
         #endregion

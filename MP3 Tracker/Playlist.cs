@@ -54,13 +54,11 @@ namespace MP3_Tracker
             newPlaylist.Add(songToAdd);
         }
 
-        /*public void DisplayPlaylist()
+
+        public void ChooseSong(int songNum)
         {
-            for (int i = 0; i < newPlaylist.Count; i++)
-            {
-                Console.WriteLine(newPlaylist[i]);
-            }
-        }*/
+            newPlaylist.ElementAt(songNum);
+        }
 
         public override string ToString()
         {
