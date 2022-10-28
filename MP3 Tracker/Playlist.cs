@@ -46,7 +46,7 @@ namespace MP3_Tracker
         }
 
         /// <summary>
-        /// 
+        /// adds a song to the user's playlist
         /// </summary>
         /// <param name="songToAdd">Song being added to the playlist</param>
         public void AddToPlaylist(MP3 songToAdd)
@@ -69,6 +69,26 @@ namespace MP3_Tracker
         public void RemoveSong(int songNum)
         {
             newPlaylist.RemoveAt(songNum);
+        }
+
+        public void DisplaySongsByGenre()
+        {
+            
+        }
+
+        public void DisplaySongsByArtist(string artist)
+        {
+            
+        }
+
+        public void SortByTitle()
+        {
+            newPlaylist.Sort((x, y) => x.title.CompareTo(y.title));
+        }
+
+        public void SortByReleaseDate()
+        {
+            newPlaylist.Sort((x, y) => x.releaseDate.CompareTo(y.releaseDate));
         }
 
         public override string ToString()

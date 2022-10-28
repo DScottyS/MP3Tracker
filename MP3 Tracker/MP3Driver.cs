@@ -74,6 +74,10 @@ namespace MP3_Tracker
                 {
                     RemoveFromPlaylist();
                 }
+                else if (choice == 8)
+                {
+                    SortBasedOnTitleOrReleaseDate();
+                }
                 //if the user does not input a number between 1 and 13, prompts the user to input a number between 1 and 13
                 else if (choice > 13)
                 {
@@ -111,6 +115,10 @@ namespace MP3_Tracker
 
         static int songNumber;
 
+        static string displayBasedOn;
+
+        static string sortBasedOn;
+
 
         #endregion
 
@@ -129,7 +137,7 @@ namespace MP3_Tracker
             "\n5. Edit a song in the playlist" +
             "\n6. Remove a song from the playlist" +
             "\n7. WIP" +
-            "\n8. WIP" +
+            "\n8. Sort the songs by either title or release date" +
             "\n9. WIP" +
             "\n10. WIP" +
             "\n11. WIP" +
@@ -422,6 +430,57 @@ namespace MP3_Tracker
             }
 
             Menu();
+        }
+
+        public static void DisplayBasedOnGenreOrArtist()
+        {
+            Console.WriteLine("would you like to see 1.) all songs with the same genre or 2.) all songs by the same artist?");
+            displayBasedOn = Console.ReadLine().ToLower();
+
+            do
+            {
+                switch (displayBasedOn)
+                {
+                    case "genre":
+                        break;
+                    case "artist":
+                        break;
+                    default:
+                        Console.WriteLine("invalid input");
+                        break;
+                }
+            } while (displayBasedOn != "title" && displayBasedOn != "release date");
+
+        }
+
+        public static void SortBasedOnTitleOrReleaseDate()
+        {
+            Console.Write("Would you like to sort the playlist based on 1.) title, or 2.) release date: ");
+            sortBasedOn = Console.ReadLine().ToLower();
+
+            do
+            {
+                switch (sortBasedOn)
+                {
+                    case "1":
+                    case "title":
+                        userPlaylist.SortByTitle();
+                        Console.WriteLine("\nplaylist has been sorted by title");
+
+                        break;
+                    case "2":
+                    case "release date":
+                        userPlaylist.SortByReleaseDate();
+                        Console.WriteLine("\nplaylist has been sorted by release date");
+                        break;
+                    default:
+                        Console.WriteLine("invalid input");
+                        break;
+                }
+            } while (sortBasedOn != "title" && sortBasedOn != "release date");
+            
+            Menu();
+
         }
 
         #endregion
