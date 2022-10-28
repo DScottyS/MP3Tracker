@@ -56,7 +56,14 @@ namespace MP3_Tracker
 
         public void ChooseSong(int songNum)
         {
-            newPlaylist.ElementAt(songNum);
+            try
+            {
+                newPlaylist.ElementAt(songNum);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.WriteLine($"The song at position {songNum + 1} does not exist");
+            }
         }
 
         public void RemoveSong(int songNum)
@@ -75,9 +82,9 @@ namespace MP3_Tracker
 
             for (int i = 0; i < newPlaylist.Count; i++)
             {
-                info += $"song #{i + 1}\n";
+                info += $"Song #{i + 1}\n";
                 info += newPlaylist[i];
-                info += $"\n\n";
+                info += $"\n";
             }
 
             return info;

@@ -41,11 +41,8 @@ namespace MP3_Tracker
             //stores the name the user inputs for later
             userName = Console.ReadLine();
 
-            //uses the menu method to display all options available to the user
+            //uses the menu method to display all options available to the user and lets them choose what they want to do
             Menu();
-
-            //Takes the number the user input so they can navigate the menu
-            //choice = Int32.Parse(Console.ReadLine());
 
             //depending on what the user inputs, will either create a new MP3, display an existing MP3 (if possible)
             //or exit the program
@@ -56,23 +53,19 @@ namespace MP3_Tracker
                 {
                     CreateANewSong();
                 }
-
                 //displays an existing MP3 if possible, if not, prompts the user to make one
                 else if (choice == 2)
                 {
                     DisplayASong();
                 }
-
                 else if (choice == 3)
                 {
                     CreateAPlaylist();
                 }
-
                 else if (choice == 4)
                 {
                     ShowPlaylist();
                 }
-
                 else if (choice == 5)
                 {
                     EditSongInPlaylist();
@@ -81,7 +74,6 @@ namespace MP3_Tracker
                 {
                     RemoveFromPlaylist();
                 }
-
                 //if the user does not input a number between 1 and 13, prompts the user to input a number between 1 and 13
                 else if (choice > 13)
                 {
@@ -93,7 +85,6 @@ namespace MP3_Tracker
 
                     } while (choice > 13 || choice <= 0);
                 }
-
             } while (choice != 13);
 
             //thanks the user and exits the program when they input 13
@@ -113,10 +104,13 @@ namespace MP3_Tracker
         static MP3 newSong = new MP3();
         //creates a new playlist object so CreateANewSong method can tell if a playlist has been made
         static Playlist userPlaylist = new Playlist();
-
+        //creates a variable that lets the user choose what part of a song's file they would like to edit
         static string editSong = "";
-
+        //creates a variable that lets the user choose what song they would like to remove from the playlist
         static int songToRemove;
+
+        static int songNumber;
+
 
         #endregion
 
@@ -307,81 +301,107 @@ namespace MP3_Tracker
         /// </summary>
         public static void EditSongInPlaylist()
         {
-            Console.Write("Please enter the number  of the song in the playlist you would like to edit: ");
-            int songNumber = Int32.Parse(Console.ReadLine());
-            userPlaylist.ChooseSong(songNumber - 1);
 
             do
             {
                 try
                 {
-                    Console.Write("what would you like to edit? The choices are as follows:" +
-                        "\nTitle, Artist, Release Date (type Date), Genre, Download Cost (type Price), File Size (type size)," +
-                        "\nand File Path (type Path): ");
-                    editSong = Console.ReadLine().ToLower();
-                    Enum.Parse(typeof(EditSongChoice), editSong);
+                    Console.Write("Please enter the number of the song in the playlist you would like to edit: ");
+                    songNumber = Int32.Parse(Console.ReadLine());
+                    userPlaylist.ChooseSong(songNumber - 1);
 
-                    switch (editSong)
+                    try
                     {
-                        case "title":
-                            Console.Write("What would you like to rename the song: ");
-                            newSong.title = Console.ReadLine();
-                            break;
-                        case "artist":
-                            Console.Write("What is the artist's name: ");
-                            newSong.artist = Console.ReadLine();
-                            break;
-                        case "date":
-                            Console.Write("When was the song released (MM/DD/YY): ");
-                            newSong.releaseDate = Console.ReadLine();
-                            break;
-                        case "genre":
-                            Console.Write("What is the genre of the song: ");
-                            newSong.genre = (Genre)Enum.Parse(typeof(Genre), Console.ReadLine().ToUpper());
-                            break;
-                        case "price":
-                            Console.Write("What is the price of the song: ");
-                            newSong.downloadCost = decimal.Parse(Console.ReadLine());
-                            break;
-                        case "size":
-                            Console.Write("What is the file size: ");
-                            newSong.fileSizeMB = double.Parse(Console.ReadLine());
-                            break;
-                        case "path":
-                            Console.Write("What is the file path: ");
-                            newSong.filePath = Console.ReadLine();
-                            break;
-                        default:
-                            Console.WriteLine("invalid choice");
-                            break;
+                        do
+                        {
+                            try
+                            {
+                                Console.Write("what would you like to edit? The choices are as follows:" +
+                                    "\nTitle, Artist, Release Date (type Date), Genre, Download Cost (type Price), File Size (type size)," +
+                                    "\nand File Path (type Path): ");
+                                editSong = Console.ReadLine().ToLower();
+
+                                switch (Enum.Parse(typeof(EditSongChoice), editSong))
+                                {
+                                    case EditSongChoice.title:
+                                        Console.Write("\nWhat would you like to rename the song: ");
+                                        newSong.title = Console.ReadLine();
+                                        break;
+                                    case EditSongChoice.artist:
+                                        Console.Write("\nWhat is the artist's name: ");
+                                        newSong.artist = Console.ReadLine();
+                                        break;
+                                    case EditSongChoice.date:
+                                        Console.Write("\nWhen was the song released (MM/DD/YY): ");
+                                        newSong.releaseDate = Console.ReadLine();
+                                        break;
+                                    case EditSongChoice.genre:
+                                        Console.Write("\nWhat is the genre of the song, remember, genre must be Rock, Pop, Jazz, Country, Classical, or Other: ");
+                                        newSong.genre = (Genre)Enum.Parse(typeof(Genre), Console.ReadLine().ToUpper());
+                                        break;
+                                    case EditSongChoice.price:
+                                        Console.Write("\nWhat is the price of the song: ");
+                                        newSong.downloadCost = decimal.Parse(Console.ReadLine());
+                                        break;
+                                    case EditSongChoice.size:
+                                        Console.Write("\nWhat is the file size: ");
+                                        newSong.fileSizeMB = double.Parse(Console.ReadLine());
+                                        break;
+                                    case EditSongChoice.path:
+                                        Console.Write("\nWhat is the file path: ");
+                                        newSong.filePath = Console.ReadLine();
+                                        break;
+                                    default:
+                                        Console.WriteLine("\ninvalid choice");
+                                        break;
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                throw;
+                            }
+                        } while (editSong != Enum.Parse(typeof(EditSongChoice), editSong).ToString());
                     }
+                    catch (ArgumentException e)
+                    {
+                        Console.WriteLine("\ninvalid choice");
+                    }
+                }
+                catch (FormatException e)
+                {
+                    Console.WriteLine("\ninput must be an integer");
                 }
                 catch (Exception)
                 {
-
                     throw;
                 }
-                
-            } while (editSong != Enum.Parse(typeof(EditSongChoice), editSong));
+            } while (songNumber <= -1);
 
             Menu();
         }
 
+        /// <summary>
+        /// removes the users desired song from the playlist
+        /// </summary>
         public static void RemoveFromPlaylist()
         {
             try
             {
                 do
                 {
-                    Console.Write("What is the numbered position of the song you would like to remove: ");
+                    Console.Write("\nWhat is the numbered position of the song you would like to remove: ");
                     songToRemove = Int32.Parse(Console.ReadLine());
 
                     userPlaylist.RemoveSong(songToRemove - 1);
                 } while (songToRemove <= 0);
             }
+            catch (FormatException e)
+            {
+                Console.WriteLine("\nThat is not a numbered position");
+            }
             catch (ArgumentOutOfRangeException e)
             {
-                Console.WriteLine("invalid");
+                Console.WriteLine($"\nThere is no song at position {songToRemove} in the playlist {userPlaylist.playlistName}");
             }
 
             Menu();
