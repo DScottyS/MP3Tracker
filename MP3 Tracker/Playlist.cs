@@ -18,31 +18,41 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MP3_Tracker
-{
+{   
+    /// <summary>
+    /// playlist class allows the user to create a new playlist and execute functions having to do with the playlist
+    /// </summary>
     internal class Playlist
     {
+        /// <summary>
+        /// creates a new private list of MP3s
+        /// </summary>
         private List<MP3> newPlaylist;
 
+        /// <summary>
+        /// gets and sets the name of the playlist
+        /// </summary>
         public string playlistName { get; set; }
 
+        /// <summary>
+        /// gets the name of the user who created the playlist
+        /// </summary>
         public string playlistCreator { get; set; }
 
+        /// <summary>
+        /// gets the date of when the playlist was created
+        /// </summary>
         public DateOnly creationDate { get; set; }
 
+        /// <summary>
+        /// default constructor sets all values to default values
+        /// </summary>
         public Playlist()
         {
             newPlaylist = new List<MP3>();
             playlistName = "";
             playlistCreator = "";
             creationDate = new DateOnly(0001, 1, 1);
-        }
-
-        public Playlist(List<MP3> newPlaylist, string playlistName, string playlistCreator, DateOnly creationDate)
-        {
-            this.newPlaylist = newPlaylist;
-            this.playlistName = playlistName;
-            this.playlistCreator = playlistCreator;
-            this.creationDate = creationDate;
         }
 
         /// <summary>
@@ -54,6 +64,10 @@ namespace MP3_Tracker
             newPlaylist.Add(songToAdd);
         }
 
+        /// <summary>
+        /// takes the user's input of what song they would like to choose and takes the indexed position of that number - 1
+        /// </summary>
+        /// <param name="songNum">the MP3 of the song the user chose</param>
         public void ChooseSong(int songNum)
         {
             try
@@ -71,26 +85,52 @@ namespace MP3_Tracker
             newPlaylist.RemoveAt(songNum);
         }
 
-        public void DisplaySongsByGenre()
+        public void DisplaySongsByGenre(Genre genre)
         {
-            
+            //https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.where?view=net-6.0
+            IEnumerable<MP3> genrePlaylist = newPlaylist.Where(song => song.genre == genre);
+
+            foreach (MP3 songGenre in genrePlaylist)
+            {
+                Console.WriteLine(songGenre);
+            }
         }
 
+        /// <summary>
+        /// displays all songs of a given artist as determined by the user
+        /// </summary>
+        /// <param name="artist">the name of the artist the user wants to display the songs of</param>
         public void DisplaySongsByArtist(string artist)
         {
-            
+            //https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.where?view=net-6.0
+            IEnumerable<MP3> artistPlaylist = newPlaylist.Where(song => song.artist.ToLower() == artist.ToLower());
+
+            foreach (MP3 songArtist in artistPlaylist)
+            {
+                Console.WriteLine(songArtist);
+            }
         }
 
+        /// <summary>
+        /// sorts all songs by title alphabetically 
+        /// </summary>
         public void SortByTitle()
         {
             newPlaylist.Sort((x, y) => x.title.CompareTo(y.title));
         }
 
+        /// <summary>
+        /// sorts all songs from most recent to oldest
+        /// </summary>
         public void SortByReleaseDate()
         {
             newPlaylist.Sort((x, y) => x.releaseDate.CompareTo(y.releaseDate));
         }
 
+        /// <summary>
+        /// ToString method converts everything into an easy to read string
+        /// </summary>
+        /// <returns>all given information as a string</returns>
         public override string ToString()
         {
             string info = "";

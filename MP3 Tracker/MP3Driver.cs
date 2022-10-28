@@ -74,6 +74,10 @@ namespace MP3_Tracker
                 {
                     RemoveFromPlaylist();
                 }
+                else if (choice == 7)
+                {
+                    DisplayBasedOnGenreOrArtist();
+                }
                 else if (choice == 8)
                 {
                     SortBasedOnTitleOrReleaseDate();
@@ -143,24 +147,24 @@ namespace MP3_Tracker
             "\n11. WIP" +
             "\n12. WIP" +
             "\n13. Terminate the program" +
-            "\n-----------------------------------------" +
-            "\n\nPlease type the number corresponding to what you would like to do: ");
+            "\n-----------------------------------------\n");
 
             do
             {
                 try
                 {
+                    Console.WriteLine("\nPlease type the number corresponding to what you would like to do: ");
                     choice = Int32.Parse(Console.ReadLine());
                 }
                 catch (FormatException e)
                 {
-                    Console.WriteLine("choice is invalid");
+                    Console.WriteLine("\ninvalid selection");
                 }
-                catch (Exception)
+                /*catch (Exception)
                 {
                     throw;
-                }
-            } while (choice > 13 && choice <= 0);
+                }*/
+            } while (!(choice !<= 13 && choice > 0));
         }
 
         /// <summary>
@@ -434,23 +438,30 @@ namespace MP3_Tracker
 
         public static void DisplayBasedOnGenreOrArtist()
         {
-            Console.WriteLine("would you like to see 1.) all songs with the same genre or 2.) all songs by the same artist?");
+            Console.WriteLine("\nWould you like to see 1.) all songs with the same genre or 2.) all songs by the same artist?");
             displayBasedOn = Console.ReadLine().ToLower();
 
             do
             {
-                switch (displayBasedOn)
+                if (displayBasedOn != "release date" && displayBasedOn != "1")
                 {
-                    case "genre":
-                        break;
-                    case "artist":
-                        break;
-                    default:
-                        Console.WriteLine("invalid input");
-                        break;
+                    Console.Write("\nwhat genre of songs would you like to display?: ");
+                    Genre genre = (Genre)Enum.Parse(typeof(Genre), Console.ReadLine().ToUpper());
+                    userPlaylist.DisplaySongsByGenre(genre);
                 }
-            } while (displayBasedOn != "title" && displayBasedOn != "release date");
+                else if (displayBasedOn != "artist" && displayBasedOn != "2")
+                {
+                    Console.Write("\nwhat artist's songs would you like to display?: ");
+                    string artist = Console.ReadLine();
+                    userPlaylist.DisplaySongsByArtist(artist);
+                }
+                else
+                {
+                    Console.WriteLine("that artist or genre does not exist");
+                }
+            } while (displayBasedOn != "title" && displayBasedOn != "release date" && displayBasedOn != "1" && displayBasedOn != "2");
 
+            Menu();
         }
 
         public static void SortBasedOnTitleOrReleaseDate()
@@ -462,14 +473,12 @@ namespace MP3_Tracker
             {
                 switch (sortBasedOn)
                 {
-                    case "1":
-                    case "title":
+                    case "title": case "1":
                         userPlaylist.SortByTitle();
                         Console.WriteLine("\nplaylist has been sorted by title");
 
                         break;
-                    case "2":
-                    case "release date":
+                    case "release date": case "2":
                         userPlaylist.SortByReleaseDate();
                         Console.WriteLine("\nplaylist has been sorted by release date");
                         break;
