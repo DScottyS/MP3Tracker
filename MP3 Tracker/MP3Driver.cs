@@ -362,13 +362,14 @@ namespace MP3_Tracker
                 }
             } while (userPlaylist.creationDate.ToString() == "1/1/0001");
 
+            Console.WriteLine($"\nPlaylist {userPlaylist.playlistName} created successfully");
             //displays the menu
             Menu();
         }
 
         /// <summary>
         /// asks the user to choose the numbered position of a song and allows them to edit that song
-        /// I had a lot of trouble with this method and ultimately could not find a way to get it to work correctly
+        /// I had a lot of trouble with this method and ultimately could not find a way to get it to work completely correctly
         /// </summary>
         public static void EditSongInPlaylist()
         {
