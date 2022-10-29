@@ -90,11 +90,19 @@ namespace MP3_Tracker
             }
         }
 
+        /// <summary>
+        /// removes a desired song in position songNum
+        /// </summary>
+        /// <param name="songNum">the indexed position of the song that should be removed</param>
         public void RemoveSong(int songNum)
         {
             newPlaylist.RemoveAt(songNum);
         }
 
+        /// <summary>
+        /// takes the genre the user would like to display and displays each song with that genre
+        /// </summary>
+        /// <param name="genre">the genre of songs the user would like to display</param>
         public void DisplaySongsByGenre(Genre genre)
         {
             //https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.where?view=net-6.0
@@ -163,8 +171,6 @@ namespace MP3_Tracker
             {
                 info += "\nThere are no songs currently in your playlist";
             }
-
-            
 
             return info;
         }

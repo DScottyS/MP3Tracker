@@ -34,6 +34,7 @@ namespace MP3_Tracker
         /// </summary>
         public static void Main()
         {
+            //welcomes user
             Console.WriteLine("------------------------------------------------------------" +
                 "\n\t  Welcome to the Funky Munky MP3 Tracker\n" +
                 "------------------------------------------------------------" +
@@ -137,7 +138,7 @@ namespace MP3_Tracker
         /// </summary>
         public static void Menu()
         {
-            
+            //displays the options available to the user
             Console.Write("\n-----------------------------------------" +
             "\n1. Create a new MP3 file" +
             "\n2. Display an MP3 file" +
@@ -150,6 +151,7 @@ namespace MP3_Tracker
             "\n9. Terminate the program" +
             "\n-----------------------------------------\n");
 
+            //ensures the user chooses a number between 1-9
             do
             {
                 try
@@ -174,6 +176,7 @@ namespace MP3_Tracker
         /// </summary>
         public static void CreateANewSong()
         {
+            //creates a new MP3 object that can be stored in the playlist each time the user makes a new MP3
             newSong = new MP3();
 
             //stores the title of the song
@@ -365,9 +368,11 @@ namespace MP3_Tracker
 
         /// <summary>
         /// asks the user to choose the numbered position of a song and allows them to edit that song
+        /// I had a lot of trouble with this method and ultimately could not find a way to get it to work correctly
         /// </summary>
         public static void EditSongInPlaylist()
         {
+            //makes the user choose the song they want to edit
             do
             {
                 try
@@ -383,6 +388,7 @@ namespace MP3_Tracker
                 }
             } while (songNumber <= 0 && songNumber >= userPlaylist.PlaylistLength());
 
+            //prompts the user to choose what they want to edit in the MP3 they chose
             try
             {
                 Console.Write("\nWhat would you like to edit? The choices are as follows:" +
@@ -396,6 +402,7 @@ namespace MP3_Tracker
                 Console.WriteLine($"{editSong} is an invalid input");
             }
 
+            //sets whatever the user was trying to change to a valid value
             try
             {
                 switch (Enum.Parse(typeof(EditSongChoice), editSong))
@@ -459,6 +466,7 @@ namespace MP3_Tracker
                 Console.WriteLine("\nNot a valid date");
             }
             
+            //calls the menu method
             Menu();
         }
 
@@ -578,7 +586,6 @@ namespace MP3_Tracker
                         case "1":
                             userPlaylist.SortByTitle();
                             Console.WriteLine("\nPlaylist has been sorted by title");
-
                             break;
                         case "release date":
                         case "2":
@@ -594,9 +601,7 @@ namespace MP3_Tracker
                 {
                     Console.WriteLine("an error has occurred");
                 }
-                
             } while (sortBasedOn != "title" && sortBasedOn != "release date" && sortBasedOn != "1" && sortBasedOn != "2");
-
             //takes the user back to the menu
             Menu();
         }
