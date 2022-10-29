@@ -77,15 +77,16 @@ namespace MP3_Tracker
         /// takes the user's input of what song they would like to choose and takes the indexed position of that number - 1
         /// </summary>
         /// <param name="songNum">the MP3 of the song the user chose</param>
-        public void ChooseSong(int songNum)
+        public void EditSong(int songNum)
         {
             try
             {
-                newPlaylist.ElementAt(songNum - 1);
+                newPlaylist.Add(newPlaylist.ElementAt(songNum - 1));
+                newPlaylist.RemoveAt(songNum - 1);
             }
             catch (ArgumentOutOfRangeException e)
             {
-                Console.WriteLine($"The song at position {songNum + 1} does not exist");
+                Console.WriteLine($"The song at position {songNum} does not exist");
             }
         }
 

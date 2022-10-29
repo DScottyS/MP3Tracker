@@ -56,7 +56,7 @@ namespace MP3_Tracker
 
             info += $"\nMP3 Title: {title}";
             info += $"\nArtist: {artist}";
-            info += $"\nRelease Date: {releaseDate}       \t\tGenre:{genre}";
+            info += $"\nRelease Date: {releaseDate}       \t\tGenre: {genre}";
             info += $"\nDownload Cost: ${downloadCost}       \t\tFile Size: {fileSizeMB}MB";
             info += $"\nPlayback Time: {Math.Round(playbackTime/60, 2)} Mins       \t\tAlbum Photo: {filePath}";
             

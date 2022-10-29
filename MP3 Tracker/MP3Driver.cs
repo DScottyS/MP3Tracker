@@ -106,29 +106,29 @@ namespace MP3_Tracker
 
         #region Attributes
         //creates a string for the user's name to be stored in
-        static string userName = "";
+        private static string userName = "";
         //creates a variable that will hold the number corresponding to the choice the user inputs
-        static int choice;
+        private static int choice;
         //creates a new MP3 variable called newSong for the user to input information relating to their song into
-        static MP3 newSong = new MP3();
+        private static MP3 newSong = new MP3();
         //takes the genre the user wants to make a song be
-        static string userGenre;
+        private static string userGenre;
         //creates a new playlist object so CreateANewSong method can tell if a playlist has been made
-        static Playlist userPlaylist = new Playlist();
+        private static Playlist userPlaylist = new Playlist();
         //creates a variable that lets the user choose what part of a song's file they would like to edit
-        static string editSong = "";
+        private static string editSong = "";
         //creates a variable that lets the user choose what song they would like to remove from the playlist
-        static int songToRemove;
+        private static int songToRemove;
         //the numeric position of the song the user wants to remove from a playlist
-        static int songNumber;
+        private static int songNumber;
         //user input for the DisplayBasedOnGenreOrArtist() method
-        static string displayBasedOn;
+        private static string displayBasedOn;
         //user input for the SortBasedOnTitleOrReleaseDate() method
-        static string sortBasedOn;
+        private static string sortBasedOn;
         //ensures the user inputs a valid genre
-        static bool validGenre = false;
+        private static bool validGenre = false;
         //determines if the user wants to add a new song to the playlisto 
-        static char addToPlaylist;
+        private static char addToPlaylist;
         #endregion
 
         #region Methods
@@ -234,7 +234,7 @@ namespace MP3_Tracker
                         }
                         catch (ArgumentException)
                         {
-                            Console.WriteLine("\nInvalid genre");
+                            Console.WriteLine("\nInvalid input");
                         }
                     } while (newSong.genre == Genre.NONE);
                 }
@@ -374,31 +374,30 @@ namespace MP3_Tracker
                 {
                     Console.Write("Please enter the number of the song in the playlist you would like to edit: ");
                     songNumber = Int32.Parse(Console.ReadLine());
-                    userPlaylist.ChooseSong(songNumber);
+                    userPlaylist.EditSong(songNumber);
                 }
                 catch (Exception)
                 {
 
                     throw;
                 }
-            } while (songNumber > 0 && songNumber <= userPlaylist.PlaylistLength());
+            } while (songNumber <= 0 && songNumber >= userPlaylist.PlaylistLength());
 
-            do
+            try
             {
-                try
-                {
-                    Console.Write("what would you like to edit? The choices are as follows:" +
-                            "\nTitle, Artist, Release Date (type Date), Genre, Download Cost (type Price), File Size (type size)," +
-                            "\nand File Path (type Path): ");
-                    editSong = Console.ReadLine().ToLower();
+                Console.Write("\nWhat would you like to edit? The choices are as follows:" +
+                        "\nTitle, Artist, Release Date (type Date), Genre, Download Cost (type Price), File Size (type size)," +
+                        "\nand File Path (type Path): ");
+                editSong = Console.ReadLine().ToLower();
 
-                }
-                catch (Exception)
-                {
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine($"{editSong} is an invalid input");
+            }
 
-                    throw;
-                }
-
+            try
+            {
                 switch (Enum.Parse(typeof(EditSongChoice), editSong))
                 {
                     case EditSongChoice.title:
@@ -425,19 +424,22 @@ namespace MP3_Tracker
                         }
                         catch (Exception)
                         {
-                            throw;
+                            Console.WriteLine("\nNot a valid price");
                         }
                         break;
                     case EditSongChoice.size:
-                        try
+                        do
                         {
-                            Console.Write("\nWhat is the file size: ");
-                            newSong.fileSizeMB = double.Parse(Console.ReadLine());
-                        }
-                        catch (Exception)
-                        {
-                            throw;
-                        }
+                            try
+                            {
+                                Console.Write("\nPlease enter the size of the song in MB: ");
+                                newSong.fileSizeMB = Double.Parse(Console.ReadLine());
+                            }
+                            catch (FormatException e)
+                            {
+                                Console.WriteLine("\nNot a valid file size");
+                            }
+                        } while (newSong.fileSizeMB < 0.001);
                         break;
                     case EditSongChoice.path:
                         Console.Write("\nWhat is the file path: ");
@@ -447,8 +449,16 @@ namespace MP3_Tracker
                         Console.WriteLine("\nThat is not an option supported by this program");
                         break;
                 }
-            } while (editSong != Enum.Parse(typeof(EditSongChoice), editSong));
-
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine("\nInvalid date");
+            }
+            catch (FormatException e)
+            {
+                Console.WriteLine("\nNot a valid date");
+            }
+            
             Menu();
         }
 
@@ -515,12 +525,14 @@ namespace MP3_Tracker
                     Console.WriteLine("\nWould you like to see 1.) all songs with the same genre or 2.) all songs by the same artist?");
                     displayBasedOn = Console.ReadLine().ToLower();
 
+                    //if the user types genre or 1, asks what genre they want to display
                     if (displayBasedOn == "genre" || displayBasedOn == "1")
                     {
                         Console.Write("\nwhat genre of songs would you like to display?: ");
                         Genre genre = (Genre)Enum.Parse(typeof(Genre), Console.ReadLine().ToUpper());
                         userPlaylist.DisplaySongsByGenre(genre);
                     }
+                    //if the user types artist or 2, asks what artists' songs they want to display
                     else if (displayBasedOn == "artist" || displayBasedOn == "2")
                     {
                         Console.Write("\nWhat artist's songs would you like to display?: ");
@@ -529,12 +541,12 @@ namespace MP3_Tracker
                     }
                     else
                     {
-                        Console.WriteLine("Invalid selection");
+                        Console.WriteLine("\nInvalid selection");
                     }
                 }
                 catch (ArgumentException)
                 {
-                    Console.WriteLine("Invalid genre");
+                    Console.WriteLine("\nInvalid genre");
                 }
                 catch (Exception)
                 {
@@ -574,14 +586,13 @@ namespace MP3_Tracker
                             Console.WriteLine("\nPlaylist has been sorted by release date");
                             break;
                         default:
-                            Console.WriteLine("Invalid input");
+                            Console.WriteLine("\nInvalid input");
                             break;
                     }
                 }
                 catch (Exception)
                 {
-                    //Console.WriteLine("an error has occurred");
-                    throw;
+                    Console.WriteLine("an error has occurred");
                 }
                 
             } while (sortBasedOn != "title" && sortBasedOn != "release date" && sortBasedOn != "1" && sortBasedOn != "2");
