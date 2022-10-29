@@ -24,6 +24,7 @@ namespace MP3_Tracker
     /// </summary>
     public enum Genre
     {
+        NONE,
         ROCK,
         POP,
         JAZZ,

@@ -65,6 +65,15 @@ namespace MP3_Tracker
         }
 
         /// <summary>
+        /// counts the length of the playlist and returns it as an integer
+        /// </summary>
+        /// <returns>the integer equivalent to the length of the playlist</returns>
+        public int PlaylistLength()
+        {
+            return newPlaylist.Count();
+        }
+
+        /// <summary>
         /// takes the user's input of what song they would like to choose and takes the indexed position of that number - 1
         /// </summary>
         /// <param name="songNum">the MP3 of the song the user chose</param>
@@ -72,7 +81,7 @@ namespace MP3_Tracker
         {
             try
             {
-                newPlaylist.ElementAt(songNum);
+                newPlaylist.ElementAt(songNum - 1);
             }
             catch (ArgumentOutOfRangeException e)
             {
@@ -123,7 +132,7 @@ namespace MP3_Tracker
         /// sorts all songs from most recent to oldest
         /// </summary>
         public void SortByReleaseDate()
-        {
+        { 
             newPlaylist.Sort((x, y) => x.releaseDate.CompareTo(y.releaseDate));
         }
 
@@ -138,14 +147,23 @@ namespace MP3_Tracker
             info += $"\n-----------------------------------------";
             info += $"\n\n{playlistName} by {playlistCreator}";
             info += $"\n\ncreated on {creationDate}";
-            info += $"\n\n-----------------------------------------\n\n";
+            info += $"\n\n-----------------------------------------";
 
-            for (int i = 0; i < newPlaylist.Count; i++)
+            if (newPlaylist.Count > 0)
             {
-                info += $"Song #{i + 1}\n";
-                info += newPlaylist[i];
-                info += $"\n";
+                for (int i = 0; i < newPlaylist.Count; i++)
+                {
+                    info += $"\n\nSong #{i + 1}\n";
+                    info += newPlaylist[i];
+                    info += $"\n";
+                }
             }
+            else
+            {
+                info += "\nThere are no songs currently in your playlist";
+            }
+
+            
 
             return info;
         }

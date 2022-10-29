@@ -24,7 +24,7 @@ namespace MP3_Tracker
         /// </summary>
         public string title { get; set; }
         public string artist { get; set; }
-        public string releaseDate { get; set; }
+        public DateOnly releaseDate { get; set; }
         public double playbackTime { get; set; }
         public Genre genre { get; set; }
         public decimal downloadCost { get; set; }
@@ -38,9 +38,9 @@ namespace MP3_Tracker
         {
             title = "";
             artist = "";
-            releaseDate = "";
+            releaseDate = new DateOnly (0001, 1, 1);
             playbackTime = 0;
-            genre = new Genre();
+            genre = Genre.NONE;
             downloadCost = 0;
             fileSizeMB = 0;
             filePath = "";
@@ -56,9 +56,9 @@ namespace MP3_Tracker
 
             info += $"\nMP3 Title: {title}";
             info += $"\nArtist: {artist}";
-            info += $"\nRelease Date: {releaseDate}                                  \t\tGenre:{genre}";
-            info += $"\nDownload Cost: ${downloadCost}                               \t\tFile Size: {fileSizeMB}MB";
-            info += $"\nPlayback Time: {Math.Round(playbackTime/60, 2)} Mins         \tAlbum Photo: {filePath}";
+            info += $"\nRelease Date: {releaseDate}       \t\tGenre:{genre}";
+            info += $"\nDownload Cost: ${downloadCost}       \t\tFile Size: {fileSizeMB}MB";
+            info += $"\nPlayback Time: {Math.Round(playbackTime/60, 2)} Mins       \t\tAlbum Photo: {filePath}";
             
             return info;
         }

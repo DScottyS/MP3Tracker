@@ -19,5 +19,5 @@ namespace MP3_Tracker
         size,
         path
     }
-    
+
 }
