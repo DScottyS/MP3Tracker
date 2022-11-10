@@ -1,0 +1,11 @@
+Epic Playlist1!!1!|Scotty Snyder|11/9/2021
+
+title|artist|release date|playback time|genre|price|file size|album cover path
+
+NEXUS|Hiroyuki Sawano|5/4/2019|229|Other|1.29|4.29|C:/Users/Scotty/Downloads/CoverImage.png
+Clair De Lune|Claude Debussy|1/1/1905|314|Classical|0.00|3.76|C:/Users/Scotty/Downloads/CoverImage.png
+Dare|Stan Bush|7/16/1986|241|Rock|0.99|1.29|C:/Users/Scotty/Downloads/CoverImage.png
+Cantina Band|John Williams|5/25/1977|164|Jazz|2.29|3.26|C:/Users/Scotty/Downloads/CoverImage.png
+Somebody That I Used to Know|Gotye|7/5/2011|243|Pop|0.99|3.46|C:/Users/Scotty/Downloads/CoverImage.png
+In the Shadow of the Valley|Don Burnham|7/26/2020|227|Country|0.00|2.64|C:/Users/Scotty/Downloads/CoverImage.png
+Who's Ready for Tomorrow|RATBOY|12/11/2020|116|Alternative|1.29|1.97|C:/Users/Scotty/Downloads/CoverImage.png

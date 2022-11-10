@@ -18,7 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MP3_Tracker
-{   
+{
     /// <summary>
     /// playlist class allows the user to create a new playlist and execute functions having to do with the playlist
     /// </summary>
@@ -32,17 +32,19 @@ namespace MP3_Tracker
         /// <summary>
         /// gets and sets the name of the playlist
         /// </summary>
-        public string playlistName { get; set; }
+        public string PlaylistName { get; set; }
 
         /// <summary>
         /// gets the name of the user who created the playlist
         /// </summary>
-        public string playlistCreator { get; set; }
+        public string PlaylistCreator { get; set; }
 
         /// <summary>
         /// gets the date of when the playlist was created
         /// </summary>
-        public DateOnly creationDate { get; set; }
+        public DateOnly CreationDate { get; set; }
+
+        public bool SaveNeeded { get; set; }
 
         /// <summary>
         /// default constructor sets all values to default values
@@ -50,9 +52,9 @@ namespace MP3_Tracker
         public Playlist()
         {
             newPlaylist = new List<MP3>();
-            playlistName = "";
-            playlistCreator = "";
-            creationDate = new DateOnly(0001, 1, 1);
+            PlaylistName = "";
+            PlaylistCreator = "";
+            CreationDate = new DateOnly(0001, 1, 1);
         }
 
         /// <summary>
@@ -99,6 +101,11 @@ namespace MP3_Tracker
             newPlaylist.RemoveAt(songNum);
         }
 
+        public void SearchForTitle(string title)
+        {
+            newPlaylist.Equals(title);
+        }
+
         /// <summary>
         /// takes the genre the user would like to display and displays each song with that genre
         /// </summary>
@@ -134,7 +141,7 @@ namespace MP3_Tracker
         /// </summary>
         public void SortByTitle()
         {
-            newPlaylist.Sort((x, y) => x.title.CompareTo(y.title));
+            newPlaylist.Sort((x, y) => x.Title.CompareTo(y.Title));
         }
 
         /// <summary>
@@ -143,6 +150,72 @@ namespace MP3_Tracker
         public void SortByReleaseDate()
         { 
             newPlaylist.Sort((x, y) => x.releaseDate.CompareTo(y.releaseDate));
+        }
+
+        public void FillFromFile(string filePath)
+        {
+            StreamReader sr = new StreamReader(filePath);
+
+            try
+            {
+                while (sr.Peek() != -1)
+                {
+                    string line = sr.ReadLine();
+                    string[] songInfo = line.Split("|");
+
+                    MP3 song = new MP3(songInfo[0], songInfo[1], DateOnly.Parse(songInfo[2]), Int32.Parse(songInfo[3]), 
+                        (Genre)Enum.Parse(typeof(Genre), songInfo[4].ToUpper()), decimal.Parse(songInfo[5]), double.Parse(songInfo[6]), songInfo[7]);
+
+                    newPlaylist.Add(song);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine("\nThere is an invalid genre in the file");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                if (sr != null)
+                {
+                    sr.Close();
+                }
+            }
+
+            SaveNeeded = true;
+        }
+
+        public void SaveToFile(string filePath)
+        {
+            StreamWriter sw = new StreamWriter(filePath);
+
+            try
+            {
+                for (int i = 0; i < newPlaylist.Count; i++)
+                {
+                    sw.WriteLine(newPlaylist.ElementAt(i).Title + "|" + newPlaylist.ElementAt(i).artist + "|" + newPlaylist.ElementAt(i).releaseDate
+                         + "|" + newPlaylist.ElementAt(i).playbackTime + "|" + newPlaylist.ElementAt(i).genre + "|" + newPlaylist.ElementAt(i).downloadCost
+                         + "|" + newPlaylist.ElementAt(i).fileSizeMB + "|" + newPlaylist.ElementAt(i).filePath);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                if (sw != null)
+                {
+                    sw.Close();
+                }
+            }
+
+            SaveNeeded = true;
         }
 
         /// <summary>
@@ -154,8 +227,8 @@ namespace MP3_Tracker
             string info = "";
 
             info += $"\n-----------------------------------------";
-            info += $"\n\n{playlistName} by {playlistCreator}";
-            info += $"\n\ncreated on {creationDate}";
+            info += $"\n\n{PlaylistName} by {PlaylistCreator}";
+            info += $"\n\ncreated on {CreationDate}";
             info += $"\n\n-----------------------------------------";
 
             if (newPlaylist.Count > 0)

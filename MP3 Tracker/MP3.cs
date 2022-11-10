@@ -22,7 +22,7 @@ namespace MP3_Tracker
         /// properties get and set the information about a song the user input such as: Title, Artist, Release date, 
         /// Playback time, Genre, Download cost, File size, and the path for the album photo
         /// </summary>
-        public string title { get; set; }
+        public string Title { get; set; }
         public string artist { get; set; }
         public DateOnly releaseDate { get; set; }
         public double playbackTime { get; set; }
@@ -36,7 +36,7 @@ namespace MP3_Tracker
         /// </summary>
         public MP3()
         {
-            title = "";
+            Title = "";
             artist = "";
             releaseDate = new DateOnly (0001, 1, 1);
             playbackTime = 0;
@@ -47,6 +47,29 @@ namespace MP3_Tracker
         }
 
         /// <summary>
+        /// Parameterized constructor for MP3 objects
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="artist"></param>
+        /// <param name="releaseDate"></param>
+        /// <param name="playbackTime"></param>
+        /// <param name="genre"></param>
+        /// <param name="downloadCost"></param>
+        /// <param name="fileSizeMB"></param>
+        /// <param name="filePath"></param>
+        public MP3(string title, string artist, DateOnly releaseDate, double playbackTime, Genre genre, decimal downloadCost, double fileSizeMB, string filePath)
+        {
+            Title = title;
+            this.artist = artist;
+            this.releaseDate = releaseDate;
+            this.playbackTime = playbackTime;
+            this.genre = genre;
+            this.downloadCost = downloadCost;
+            this.fileSizeMB = fileSizeMB;
+            this.filePath = filePath;
+        }
+
+        /// <summary>
         /// ToString method converts everything into a string so it can be called in the main method
         /// </summary>
         /// <returns>string displaying the information the user input</returns>
@@ -54,7 +77,7 @@ namespace MP3_Tracker
         {
             string info = "";
 
-            info += $"\nMP3 Title: {title}";
+            info += $"\nMP3 Title: {Title}";
             info += $"\nArtist: {artist}";
             info += $"\nRelease Date: {releaseDate}       \t\tGenre: {genre}";
             info += $"\nDownload Cost: ${downloadCost}       \t\tFile Size: {fileSizeMB}MB";
