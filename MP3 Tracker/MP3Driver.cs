@@ -38,13 +38,13 @@ namespace MP3_Tracker
             Console.WriteLine("------------------------------------------------------------" +
                 "\n\t  Welcome to the Funky Munky MP3 Tracker\n" +
                 "------------------------------------------------------------" +
-                "\nHere, you can create and display MP3s, please enter your name:\n");
+                "\nHere, you can create and display MP3s, please enter your name\n");
 
             //stores the name the user inputs for later
             userName = Console.ReadLine();
 
             //prompts the user to create a playlist before they continue using the program
-            Console.WriteLine($"Hello {userName}! Please create a playlist:");
+            Console.WriteLine($"\nHello {userName}! Please create a playlist:");
             CreateAPlaylist();
 
             //using takes the number the user gives at the end of the menu method to call the corresponding method
@@ -130,6 +130,7 @@ namespace MP3_Tracker
         private static bool validGenre = false;
         //determines if the user wants to add a new song to the playlist
         private static char addToPlaylist;
+        //gets the file path the user would like to read playlist data from or write playlist data to
         private static string filePath = "";
 
         #endregion
@@ -508,6 +509,9 @@ namespace MP3_Tracker
             Menu();
         }
 
+        /// <summary>
+        /// Displays all songs in the user's playlist of a specific genre
+        /// </summary>
         public static void DisplayByGenre()
         {
             try
@@ -527,6 +531,9 @@ namespace MP3_Tracker
             Menu();
         }
 
+        /// <summary>
+        /// displays all songs in the user's playlist by a specified artist
+        /// </summary>
         public static void DisplayByArtist()
         {
             Console.Write("\nWhat Artist's songs would you like to display?: ");
@@ -535,6 +542,9 @@ namespace MP3_Tracker
             userPlaylist.DisplaySongsByArtist(artist);
         }
 
+        /// <summary>
+        /// sorts all songs in the user's playlist alphabetically
+        /// </summary>
         public static void SortByTitle()
         {
             userPlaylist.SortByTitle();
@@ -543,6 +553,9 @@ namespace MP3_Tracker
             Menu();
         }
 
+        /// <summary>
+        /// sorts all songs in the user's playlist by release date
+        /// </summary>
         public static void SortByReleaseDate()
         {
             userPlaylist.SortByReleaseDate();
@@ -551,6 +564,9 @@ namespace MP3_Tracker
             Menu();
         }
 
+        /// <summary>
+        /// WIP, will display all songs in the user's playlist with a specific title
+        /// </summary>
         public static void SearchByTitle()
         {
             Console.Write("\nTitle of song you wan: ");
@@ -578,6 +594,9 @@ namespace MP3_Tracker
             Menu();
         }
 
+        /// <summary>
+        /// fills the user's playlist with information from a file they give the path to
+        /// </summary>
         public static void FillPlaylistFromFile()
         {
             Console.WriteLine("\nPlease input the file path including the file name (i.e. H:\\CSCI1260\\MP3 Tracker\\songs.txt)");
@@ -590,27 +609,43 @@ namespace MP3_Tracker
             Menu();
         }
 
+        /// <summary>
+        /// writes the user's playlist data into a file 
+        /// </summary>
         public static void WriteToFile()
         {
-            Console.Write($"\nWould you like to save to the file in {filePath}? Y/N: ");
-            char answer = Console.ReadLine().ToUpper()[0];
 
-            do
+
+            if (filePath == "")
             {
-                if (answer == 'Y')
+                Console.WriteLine("\nPlease input the file path including the file name (i.e. H:\\CSCI1260\\MP3 Tracker\\songs.txt)");
+                filePath = Console.ReadLine();
+            }
+            else
+            {
+                do
                 {
-                    filePath = filePath;
-                }
-                else if (answer == 'N')
-                {
-                    Console.WriteLine("Please input the path to the file you would like to use");
-                    filePath = Console.ReadLine();
-                }
-                else
-                {
-                    Console.WriteLine($"You did not input a valid response, Would you like to save to the file in {filePath}? Y/N");
-                }
-            } while (answer != 'Y' && answer != 'N');
+                    Console.Write($"\nWould you like to save to the file in {filePath}? Y/N: ");
+                    char answer = Console.ReadLine().ToUpper()[0];
+
+                    if (answer == 'Y')
+                    {
+                        filePath = filePath;
+                    }
+                    else if (answer == 'N')
+                    {
+                        Console.WriteLine("Please input the path to the file you would like to use");
+                        filePath = Console.ReadLine();
+                    }
+                    else
+                    {
+                        Console.WriteLine($"You did not input a valid response, Would you like to save to the file in {filePath}? Y/N");
+                    }
+                } while (answer != 'Y' && answer != 'N');
+            }
+
+
+
 
 
             userPlaylist.SaveToFile(filePath);
