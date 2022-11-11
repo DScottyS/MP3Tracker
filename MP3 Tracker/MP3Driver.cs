@@ -43,6 +43,7 @@ namespace MP3_Tracker
             //stores the name the user inputs for later
             userName = Console.ReadLine();
 
+            //prompts the user to create a playlist before they continue using the program
             Console.WriteLine($"Hello {userName}! Please create a playlist:");
             CreateAPlaylist();
 
@@ -84,21 +85,24 @@ namespace MP3_Tracker
                     case 11:
                         FillPlaylistFromFile();
                         break;
-                    //when the choice is 12, calls no method and breaks, causing the program to end
                     case 12:
+                        WriteToFile();
+                        break;
+                    //when the choice is 13, calls no method and breaks, causing the program to end
+                    case 13:
                         break;
                     default:
                         do
                         {
                             Console.Write("\nInvalid input please reference the menu above: ");
                             choice = Int32.Parse(Console.ReadLine());
-                        } while (choice > 12 || choice <= 0);
+                        } while (choice > 13 || choice <= 0);
                         break;
                 }
-            } while (choice != 12);
+            } while (choice != 13);
 
             //thanks the user and exits the program when they input 9
-            if (choice == 12)
+            if (choice == 13)
             {
                 Console.WriteLine($"\nThank you for using the Funky Munky MP3 Tracker, {userName}! Have a great day!");
             }
@@ -112,7 +116,7 @@ namespace MP3_Tracker
         private static int choice;
         //creates a new MP3 variable called newSong for the user to input information relating to their song into
         private static MP3 newSong = new MP3();
-        //takes the genre the user wants to make a song be
+        //takes the Genre the user wants to make a song be
         private static string userGenre;
         //creates a new playlist object so CreateANewSong method can tell if a playlist has been made
         private static Playlist userPlaylist = new Playlist();
@@ -122,11 +126,11 @@ namespace MP3_Tracker
         private static int songToRemove;
         //the numeric position of the song the user wants to remove from a playlist
         private static int songNumber;
-        //ensures the user inputs a valid genre
+        //ensures the user inputs a valid Genre
         private static bool validGenre = false;
         //determines if the user wants to add a new song to the playlist
         private static char addToPlaylist;
-        private static string filePath;
+        private static string filePath = "";
 
         #endregion
 
@@ -144,11 +148,13 @@ namespace MP3_Tracker
             "\n4. Display your playlist" +
             "\n5. Edit a song in the playlist" +
             "\n6. Remove a song from the playlist" +
-            "\n7. Display songs of a specific genre" +
-            "\n8. Display songs by a specific artist" +
+            "\n7. Display songs of a specific Genre" +
+            "\n8. Display songs by a specific Artist" +
             "\n9. Sory by title" +
             "\n10. Sort by release date" +
-            "\n11. Terminate the program" +
+            "\n11. Fill playlist from file" +
+            "\n12. Save playlist to file" +
+            "\n13. Terminate the program" +
             "\n-----------------------------------------\n");
 
             //ensures the user chooses a number between 1-11
@@ -159,7 +165,7 @@ namespace MP3_Tracker
                     Console.Write("\nPlease type the number corresponding to what you would like to do: ");
                     choice = Int32.Parse(Console.ReadLine());
 
-                    if (choice > 11 && choice < 0)
+                    if (choice > 13 && choice < 0)
                     {
                         Console.Write("\nThat is not an option, please reference the menu above: ");
                     }
@@ -168,7 +174,7 @@ namespace MP3_Tracker
                 {
                     Console.WriteLine("\nInvalid selection, reference the menu above: ");
                 }
-            } while (!(choice !<= 11 && choice > 0));
+            } while (!(choice !<= 13 && choice > 0));
         }
 
         /// <summary>
@@ -183,9 +189,9 @@ namespace MP3_Tracker
             Console.Write("\nPlease enter the song's title: ");
             newSong.Title = Console.ReadLine();
 
-            //stores the artist of the song
+            //stores the Artist of the song
             Console.Write("\nPlease enter the name of the song's Artist: ");
-            newSong.artist = Console.ReadLine();
+            newSong.Artist = Console.ReadLine();
 
             //stores when the song was released
             do
@@ -193,13 +199,13 @@ namespace MP3_Tracker
                 try
                 {
                     Console.Write("\nPlease enter the song's release date in MM/DD/YYYY format: ");
-                    newSong.releaseDate = DateOnly.Parse(Console.ReadLine());
+                    newSong.ReleaseDate = DateOnly.Parse(Console.ReadLine());
                 }
                 catch (FormatException)
                 {
                     Console.WriteLine("\ninvalid date");
                 }
-            } while (newSong.releaseDate <= new DateOnly (0001, 1, 1));
+            } while (newSong.ReleaseDate <= new DateOnly (0001, 1, 1));
             
 
             //stores the length of the song in seconds and converts it into minutes
@@ -208,15 +214,15 @@ namespace MP3_Tracker
                 try
                 {
                     Console.Write("\nPlease enter the playback length of the song in seconds: ");
-                    newSong.playbackTime = (Double.Parse(Console.ReadLine()));
+                    newSong.PlaybackTime = (Double.Parse(Console.ReadLine()));
                 }
                 catch (FormatException)
                 {
                     Console.WriteLine("\ninvalid playback time");
                 }
-            } while (newSong.playbackTime <= 0);
+            } while (newSong.PlaybackTime <= 0);
 
-            //stores the genre of the song
+            //stores the Genre of the song
             do
             {
                 try
@@ -225,12 +231,12 @@ namespace MP3_Tracker
                     {
                         try
                         {
-                            Console.Write("\nPlease enter the genre of the song, this program recognizes the following:" +
+                            Console.Write("\nPlease enter the Genre of the song, this program recognizes the following:" +
                             " \nRock, Pop, Jazz, Country, Classical, and Other: ");
                             userGenre = Console.ReadLine().ToUpper();
-                            newSong.genre = (Genre)Enum.Parse(typeof(Genre), userGenre);
+                            newSong.Genre = (Genre)Enum.Parse(typeof(Genre), userGenre);
 
-                            if (newSong.genre == (Genre)Enum.Parse(typeof(Genre), userGenre))
+                            if (newSong.Genre == (Genre)Enum.Parse(typeof(Genre), userGenre))
                             {
                                 validGenre = true;
                             }
@@ -239,7 +245,7 @@ namespace MP3_Tracker
                         {
                             Console.WriteLine("\nInvalid input");
                         }
-                    } while (newSong.genre == Genre.NONE);
+                    } while (newSong.Genre == Genre.NONE);
                 }
                 catch (Exception)
                 {
@@ -253,13 +259,13 @@ namespace MP3_Tracker
                 try
                 {
                     Console.Write("\nPlease enter the cost to download the song (do not enter a $, cannot be negative): ");
-                    newSong.downloadCost = Decimal.Parse(Console.ReadLine());
+                    newSong.DownloadCost = Decimal.Parse(Console.ReadLine());
                 }
                 catch (FormatException e)
                 {
                     Console.WriteLine("\nInvalid download cost");
                 }
-            } while (newSong.downloadCost <= -1);
+            } while (newSong.DownloadCost <= -1);
 
             //stores the file size of the song
             do
@@ -267,18 +273,18 @@ namespace MP3_Tracker
                 try
                 {
                     Console.Write("\nPlease enter the size of the song in MB: ");
-                    newSong.fileSizeMB = Double.Parse(Console.ReadLine());
+                    newSong.FileSizeMB = Double.Parse(Console.ReadLine());
                 }
                 catch (FormatException e)
                 {
                     Console.WriteLine("\ninvalid file size");
                 }
-            } while (newSong.fileSizeMB < 0.001);
+            } while (newSong.FileSizeMB < 0.001);
             
 
             //stores the location in which the song's cover art is downloaded
             Console.WriteLine("\nPlease enter the image path(i.e. C:/Users/Scotty/Downloads/FunkyMunky.png):\n");
-            newSong.filePath = Console.ReadLine();
+            newSong.FilePath = Console.ReadLine();
 
             //if the user has created a playlist, asks the user if they want to add the song to their existing playlist
             //if no playlist exists, does nothing
@@ -413,22 +419,22 @@ namespace MP3_Tracker
                         newSong.Title = Console.ReadLine();
                         break;
                     case EditSongChoice.artist:
-                        Console.Write("\nWhat is the artist's name: ");
-                        newSong.artist = Console.ReadLine();
+                        Console.Write("\nWhat is the Artist's name: ");
+                        newSong.Artist = Console.ReadLine();
                         break;
                     case EditSongChoice.date:
                         Console.Write("\nWhen was the song released (MM/DD/YY): ");
-                        newSong.releaseDate = DateOnly.Parse(Console.ReadLine());
+                        newSong.ReleaseDate = DateOnly.Parse(Console.ReadLine());
                         break;
                     case EditSongChoice.genre:
-                        Console.Write("\nWhat is the genre of the song, remember, genre must be Rock, Pop, Jazz, Country, Classical, or Other: ");
-                        newSong.genre = (Genre)Enum.Parse(typeof(Genre), Console.ReadLine().ToUpper());
+                        Console.Write("\nWhat is the Genre of the song, remember, Genre must be Rock, Pop, Jazz, Country, Classical, or Other: ");
+                        newSong.Genre = (Genre)Enum.Parse(typeof(Genre), Console.ReadLine().ToUpper());
                         break;
                     case EditSongChoice.price:
                         try
                         {
                             Console.Write("\nWhat is the price of the song: ");
-                            newSong.downloadCost = decimal.Parse(Console.ReadLine());
+                            newSong.DownloadCost = decimal.Parse(Console.ReadLine());
                         }
                         catch (Exception)
                         {
@@ -441,17 +447,17 @@ namespace MP3_Tracker
                             try
                             {
                                 Console.Write("\nPlease enter the size of the song in MB: ");
-                                newSong.fileSizeMB = Double.Parse(Console.ReadLine());
+                                newSong.FileSizeMB = Double.Parse(Console.ReadLine());
                             }
                             catch (FormatException e)
                             {
                                 Console.WriteLine("\nNot a valid file size");
                             }
-                        } while (newSong.fileSizeMB < 0.001);
+                        } while (newSong.FileSizeMB < 0.001);
                         break;
                     case EditSongChoice.path:
                         Console.Write("\nWhat is the file path: ");
-                        newSong.filePath = Console.ReadLine();
+                        newSong.FilePath = Console.ReadLine();
                         break;
                     default:
                         Console.WriteLine("\nThat is not an option supported by this program");
@@ -506,7 +512,7 @@ namespace MP3_Tracker
         {
             try
             {
-                Console.Write("\nwhat genre of songs would you like to display?: ");
+                Console.Write("\nwhat Genre of songs would you like to display?: ");
                 Genre genre = (Genre)Enum.Parse(typeof(Genre), Console.ReadLine().ToUpper());
 
                 userPlaylist.DisplaySongsByGenre(genre);
@@ -515,7 +521,7 @@ namespace MP3_Tracker
             }
             catch (ArgumentException)
             {
-                Console.WriteLine("\nInvalid genre");
+                Console.WriteLine("\nInvalid Genre");
             }
 
             Menu();
@@ -523,7 +529,7 @@ namespace MP3_Tracker
 
         public static void DisplayByArtist()
         {
-            Console.Write("\nWhat artist's songs would you like to display?: ");
+            Console.Write("\nWhat Artist's songs would you like to display?: ");
             string artist = Console.ReadLine();
 
             userPlaylist.DisplaySongsByArtist(artist);
@@ -574,12 +580,42 @@ namespace MP3_Tracker
 
         public static void FillPlaylistFromFile()
         {
-            Console.Write("\nFile path:");
+            Console.WriteLine("\nPlease input the file path including the file name (i.e. H:\\CSCI1260\\MP3 Tracker\\songs.txt)");
             filePath = Console.ReadLine();
 
             userPlaylist.FillFromFile(filePath);
 
             Console.WriteLine("\nRead complete");
+
+            Menu();
+        }
+
+        public static void WriteToFile()
+        {
+            Console.Write($"\nWould you like to save to the file in {filePath}? Y/N: ");
+            char answer = Console.ReadLine().ToUpper()[0];
+
+            do
+            {
+                if (answer == 'Y')
+                {
+                    filePath = filePath;
+                }
+                else if (answer == 'N')
+                {
+                    Console.WriteLine("Please input the path to the file you would like to use");
+                    filePath = Console.ReadLine();
+                }
+                else
+                {
+                    Console.WriteLine($"You did not input a valid response, Would you like to save to the file in {filePath}? Y/N");
+                }
+            } while (answer != 'Y' && answer != 'N');
+
+
+            userPlaylist.SaveToFile(filePath);
+
+            Console.WriteLine("\nWrite complete");
 
             Menu();
         }

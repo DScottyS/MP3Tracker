@@ -27,7 +27,7 @@ namespace MP3_Tracker
         /// <summary>
         /// creates a new private list of MP3s
         /// </summary>
-        private List<MP3> newPlaylist;
+        private List<MP3> NewPlaylist;
 
         /// <summary>
         /// gets and sets the name of the playlist
@@ -51,7 +51,7 @@ namespace MP3_Tracker
         /// </summary>
         public Playlist()
         {
-            newPlaylist = new List<MP3>();
+            NewPlaylist = new List<MP3>();
             PlaylistName = "";
             PlaylistCreator = "";
             CreationDate = new DateOnly(0001, 1, 1);
@@ -63,7 +63,7 @@ namespace MP3_Tracker
         /// <param name="songToAdd">Song being added to the playlist</param>
         public void AddToPlaylist(MP3 songToAdd)
         {
-            newPlaylist.Add(songToAdd);
+            NewPlaylist.Add(songToAdd);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace MP3_Tracker
         /// <returns>the integer equivalent to the length of the playlist</returns>
         public int PlaylistLength()
         {
-            return newPlaylist.Count();
+            return NewPlaylist.Count();
         }
 
         /// <summary>
@@ -83,8 +83,8 @@ namespace MP3_Tracker
         {
             try
             {
-                newPlaylist.Add(newPlaylist.ElementAt(songNum - 1));
-                newPlaylist.RemoveAt(songNum - 1);
+                NewPlaylist.Add(NewPlaylist.ElementAt(songNum - 1));
+                NewPlaylist.RemoveAt(songNum - 1);
             }
             catch (ArgumentOutOfRangeException e)
             {
@@ -98,22 +98,22 @@ namespace MP3_Tracker
         /// <param name="songNum">the indexed position of the song that should be removed</param>
         public void RemoveSong(int songNum)
         {
-            newPlaylist.RemoveAt(songNum);
+            NewPlaylist.RemoveAt(songNum);
         }
 
         public void SearchForTitle(string title)
         {
-            newPlaylist.Equals(title);
+            NewPlaylist.Equals(title);
         }
 
         /// <summary>
-        /// takes the genre the user would like to display and displays each song with that genre
+        /// takes the Genre the user would like to display and displays each song with that Genre
         /// </summary>
-        /// <param name="genre">the genre of songs the user would like to display</param>
+        /// <param name="genre">the Genre of songs the user would like to display</param>
         public void DisplaySongsByGenre(Genre genre)
         {
             //https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.where?view=net-6.0
-            IEnumerable<MP3> genrePlaylist = newPlaylist.Where(song => song.genre == genre);
+            IEnumerable<MP3> genrePlaylist = NewPlaylist.Where(song => song.Genre == genre);
 
             foreach (MP3 songGenre in genrePlaylist)
             {
@@ -122,13 +122,13 @@ namespace MP3_Tracker
         }
 
         /// <summary>
-        /// displays all songs of a given artist as determined by the user
+        /// displays all songs of a given Artist as determined by the user
         /// </summary>
-        /// <param name="artist">the name of the artist the user wants to display the songs of</param>
+        /// <param name="artist">the name of the Artist the user wants to display the songs of</param>
         public void DisplaySongsByArtist(string artist)
         {
             //https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.where?view=net-6.0
-            IEnumerable<MP3> artistPlaylist = newPlaylist.Where(song => song.artist.ToLower() == artist.ToLower());
+            IEnumerable<MP3> artistPlaylist = NewPlaylist.Where(song => song.Artist.ToLower() == artist.ToLower());
 
             foreach (MP3 songArtist in artistPlaylist)
             {
@@ -141,7 +141,7 @@ namespace MP3_Tracker
         /// </summary>
         public void SortByTitle()
         {
-            newPlaylist.Sort((x, y) => x.Title.CompareTo(y.Title));
+            NewPlaylist.Sort((x, y) => x.Title.CompareTo(y.Title));
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace MP3_Tracker
         /// </summary>
         public void SortByReleaseDate()
         { 
-            newPlaylist.Sort((x, y) => x.releaseDate.CompareTo(y.releaseDate));
+            NewPlaylist.Sort((x, y) => x.ReleaseDate.CompareTo(y.ReleaseDate));
         }
 
         public void FillFromFile(string filePath)
@@ -166,12 +166,12 @@ namespace MP3_Tracker
                     MP3 song = new MP3(songInfo[0], songInfo[1], DateOnly.Parse(songInfo[2]), Int32.Parse(songInfo[3]), 
                         (Genre)Enum.Parse(typeof(Genre), songInfo[4].ToUpper()), decimal.Parse(songInfo[5]), double.Parse(songInfo[6]), songInfo[7]);
 
-                    newPlaylist.Add(song);
+                    NewPlaylist.Add(song);
                 }
             }
             catch (ArgumentException e)
             {
-                Console.WriteLine("\nThere is an invalid genre in the file");
+                Console.WriteLine("\nThere is an invalid Genre in the file");
             }
             catch (Exception)
             {
@@ -195,11 +195,11 @@ namespace MP3_Tracker
 
             try
             {
-                for (int i = 0; i < newPlaylist.Count; i++)
+                for (int i = 0; i < NewPlaylist.Count; i++)
                 {
-                    sw.WriteLine(newPlaylist.ElementAt(i).Title + "|" + newPlaylist.ElementAt(i).artist + "|" + newPlaylist.ElementAt(i).releaseDate
-                         + "|" + newPlaylist.ElementAt(i).playbackTime + "|" + newPlaylist.ElementAt(i).genre + "|" + newPlaylist.ElementAt(i).downloadCost
-                         + "|" + newPlaylist.ElementAt(i).fileSizeMB + "|" + newPlaylist.ElementAt(i).filePath);
+                    sw.WriteLine(NewPlaylist.ElementAt(i).Title + "|" + NewPlaylist.ElementAt(i).Artist + "|" + NewPlaylist.ElementAt(i).ReleaseDate
+                         + "|" + NewPlaylist.ElementAt(i).PlaybackTime + "|" + NewPlaylist.ElementAt(i).Genre + "|" + NewPlaylist.ElementAt(i).DownloadCost
+                         + "|" + NewPlaylist.ElementAt(i).FileSizeMB + "|" + NewPlaylist.ElementAt(i).FilePath);
                 }
             }
             catch (Exception)
@@ -231,12 +231,12 @@ namespace MP3_Tracker
             info += $"\n\ncreated on {CreationDate}";
             info += $"\n\n-----------------------------------------";
 
-            if (newPlaylist.Count > 0)
+            if (NewPlaylist.Count > 0)
             {
-                for (int i = 0; i < newPlaylist.Count; i++)
+                for (int i = 0; i < NewPlaylist.Count; i++)
                 {
                     info += $"\n\nSong #{i + 1}\n";
-                    info += newPlaylist[i];
+                    info += NewPlaylist[i];
                     info += $"\n";
                 }
             }

@@ -23,13 +23,13 @@ namespace MP3_Tracker
         /// Playback time, Genre, Download cost, File size, and the path for the album photo
         /// </summary>
         public string Title { get; set; }
-        public string artist { get; set; }
-        public DateOnly releaseDate { get; set; }
-        public double playbackTime { get; set; }
-        public Genre genre { get; set; }
-        public decimal downloadCost { get; set; }
-        public double fileSizeMB { get; set; }
-        public string filePath { get; set; }
+        public string Artist { get; set; }
+        public DateOnly ReleaseDate { get; set; }
+        public double PlaybackTime { get; set; }
+        public Genre Genre { get; set; }
+        public decimal DownloadCost { get; set; }
+        public double FileSizeMB { get; set; }
+        public string FilePath { get; set; }
 
         /// <summary>
         /// default constructor initializes the MP3 so that the main method can tell if an MP3 has been made or not
@@ -37,13 +37,13 @@ namespace MP3_Tracker
         public MP3()
         {
             Title = "";
-            artist = "";
-            releaseDate = new DateOnly (0001, 1, 1);
-            playbackTime = 0;
-            genre = Genre.NONE;
-            downloadCost = 0;
-            fileSizeMB = 0;
-            filePath = "";
+            Artist = "";
+            ReleaseDate = new DateOnly (0001, 1, 1);
+            PlaybackTime = 0;
+            Genre = Genre.NONE;
+            DownloadCost = 0;
+            FileSizeMB = 0;
+            FilePath = "";
         }
 
         /// <summary>
@@ -60,13 +60,13 @@ namespace MP3_Tracker
         public MP3(string title, string artist, DateOnly releaseDate, double playbackTime, Genre genre, decimal downloadCost, double fileSizeMB, string filePath)
         {
             Title = title;
-            this.artist = artist;
-            this.releaseDate = releaseDate;
-            this.playbackTime = playbackTime;
-            this.genre = genre;
-            this.downloadCost = downloadCost;
-            this.fileSizeMB = fileSizeMB;
-            this.filePath = filePath;
+            this.Artist = artist;
+            this.ReleaseDate = releaseDate;
+            this.PlaybackTime = playbackTime;
+            this.Genre = genre;
+            this.DownloadCost = downloadCost;
+            this.FileSizeMB = fileSizeMB;
+            this.FilePath = filePath;
         }
 
         /// <summary>
@@ -78,10 +78,10 @@ namespace MP3_Tracker
             string info = "";
 
             info += $"\nMP3 Title: {Title}";
-            info += $"\nArtist: {artist}";
-            info += $"\nRelease Date: {releaseDate}       \t\tGenre: {genre}";
-            info += $"\nDownload Cost: ${downloadCost}       \t\tFile Size: {fileSizeMB}MB";
-            info += $"\nPlayback Time: {Math.Round(playbackTime/60, 2)} Mins       \t\tAlbum Photo: {filePath}";
+            info += $"\nArtist: {Artist}";
+            info += $"\nRelease Date: {ReleaseDate}       \t\tGenre: {Genre}";
+            info += $"\nDownload Cost: ${DownloadCost}       \t\tFile Size: {FileSizeMB}MB";
+            info += $"\nPlayback Time: {Math.Round(PlaybackTime/60, 2)} Mins       \t\tAlbum Photo: {FilePath}";
             
             return info;
         }
