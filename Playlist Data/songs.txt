@@ -6,3 +6,4 @@ Dare|Stan Bush|7/16/1986|241|ROCK|0.99|1.29|C:/Users/Scotty/Downloads/CoverImage
 Cantina Band|John Williams|5/25/1977|164|JAZZ|2.29|3.26|C:/Users/Scotty/Downloads/CoverImage.png
 Somebody That I Used to Know|Gotye|7/5/2011|243|POP|0.99|3.46|C:/Users/Scotty/Downloads/CoverImage.png
 In the Shadow of the Valley|Don Burnham|7/26/2020|227|COUNTRY|0.00|2.64|C:/Users/Scotty/Downloads/CoverImage.png
+cocks|balls|12/14/2022|33|JAZZ|3|3|3

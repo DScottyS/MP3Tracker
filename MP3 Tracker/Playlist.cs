@@ -113,7 +113,13 @@ namespace MP3_Tracker
         /// <param name="title">title of the song the user wishes display</param>
         public void SearchForTitle(string title)
         {
-            
+            //https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.where?view=net-6.0
+            IEnumerable<MP3> songInPlaylist = NewPlaylist.Where(song => song.Title.ToLower() == title.ToLower());
+
+            foreach (MP3 songTitle in songInPlaylist)
+            {
+                Console.WriteLine(songTitle);
+            }
         }
 
         /// <summary>
@@ -180,7 +186,7 @@ namespace MP3_Tracker
 
                 try
                 {
-
+                    //reads the first line of the user's file to get the name of the playlist, the user's name, and the playlist's creation date
                     string firstLine = sr.ReadLine();
                     string[] playlistInfo = firstLine.Split("|");
 
@@ -190,6 +196,7 @@ namespace MP3_Tracker
 
                     sr.ReadLine();
 
+                    //reads each line, creates a new MP3, and fills it with the appropriate information for the rest of the file until there is nothing left to read
                     while (sr.Peek() != -1)
                     {
 
@@ -231,19 +238,26 @@ namespace MP3_Tracker
         /// <param name="filePath">path to the file the user wishes to write to</param>
         public void SaveToFile(string filePath)
         {
+            //creates a new StreamWriter to write to the file the user specifies with
             StreamWriter sw = new StreamWriter(filePath);
 
             try
             {
+                //writes down the name of the playlist, the name of the playlist's creator, and when it was created
                 sw.WriteLine(PlaylistName + "|" + PlaylistCreator + "|" + CreationDate);
                 sw.WriteLine();
 
+                //writes down each song in a specific format
                 for (int i = 0; i < NewPlaylist.Count; i++)
                 {
                     sw.WriteLine(NewPlaylist.ElementAt(i).Title + "|" + NewPlaylist.ElementAt(i).Artist + "|" + NewPlaylist.ElementAt(i).ReleaseDate
                          + "|" + NewPlaylist.ElementAt(i).PlaybackTime + "|" + NewPlaylist.ElementAt(i).Genre + "|" + NewPlaylist.ElementAt(i).DownloadCost
                          + "|" + NewPlaylist.ElementAt(i).FileSizeMB + "|" + NewPlaylist.ElementAt(i).FilePath);
                 }
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine($"\nThe file at file path {filePath} does not exist");
             }
             catch (Exception)
             {
@@ -252,9 +266,11 @@ namespace MP3_Tracker
             }
             finally
             {
+                //when there are no more lines for the StreamWriter to write, closes the file
                 if (sw != null)
                 {
                     sw.Close();
+                    SaveNeeded = false;
                 }
             }
         }

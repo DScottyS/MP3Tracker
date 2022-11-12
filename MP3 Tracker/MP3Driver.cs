@@ -3,7 +3,7 @@
          //                                                                                                     //
         // Project: MP3 Tracker                                                                                //
        // File Name: MP3Driver                                                                                //
-      // Description:                                                                                        //
+      // Description: Handles all I/O between the user and the MP3 Tracker program                           //
      // Course: CSCI 1260 – Introduction to Computer Science II                                             //
     // Author: Scotty Snyder, snyderds@etsu.edu, Department of Computing, East Tennessee State University  //
    // Created: Sunday, September 7, 2022                                                                  //
@@ -59,7 +59,7 @@ namespace MP3_Tracker
                         DisplayASong();
                         break;
                     case 3:
-                        if (userPlaylist.SaveNeeded = true)
+                        if (userPlaylist.SaveNeeded == true)
                         {
                             char answer = '\0';
 
@@ -113,31 +113,34 @@ namespace MP3_Tracker
                         FillPlaylistFromFile();
                         break;
                     case 12:
-                        WriteToFile();
+                        SavePlaylist();
                         break;
                     //when the choice is 13, if the user hasn't saved, asks if they would like to quit, if no, returns them to the menu
                     case 13:
                         char reply = '\0';
 
-                        do
+                        if (userPlaylist.SaveNeeded == true)
                         {
-                            Console.Write("\nYou have not saved you current playlist yet, are you sure you would like to quit? Y/N: ");
-                            reply = Console.ReadLine().ToUpper()[0];
+                            do
+                            {
+                                Console.Write("\nYou have not saved you current playlist yet, are you sure you would like to quit? Y/N: ");
+                                reply = Console.ReadLine().ToUpper()[0];
 
-                            if (reply == 'Y')
-                            {
-                                break;
-                            }
-                            else if (reply == 'N')
-                            {
-                                Console.WriteLine("Returning to menu");
-                                Menu();
-                            }
-                            else
-                            {
-                                Console.WriteLine($"You did not input a valid response, Would you like to quit the program without saving? Y/N");
-                            }
-                        } while (reply != 'Y' && reply != 'N');
+                                if (reply == 'Y')
+                                {
+                                    break;
+                                }
+                                else if (reply == 'N')
+                                {
+                                    Console.WriteLine("Returning to menu");
+                                    Menu();
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"You did not input a valid response, Would you like to quit the program without saving? Y/N");
+                                }
+                            } while (reply != 'Y' && reply != 'N');
+                        }
                         break;
                     default:
                         do
@@ -149,7 +152,7 @@ namespace MP3_Tracker
                 }
             } while (choice != 13);
 
-            //thanks the user and exits the program when they input 9
+            //thanks the user and exits the program when they input 13
             if (choice == 13)
             {
                 Console.WriteLine($"\nThank you for using the Funky Munky MP3 Tracker, {userName}! Have a great day!");
@@ -199,14 +202,14 @@ namespace MP3_Tracker
             "\n6. Remove a song from the playlist" +
             "\n7. Display songs of a specific Genre" +
             "\n8. Display songs by a specific Artist" +
-            "\n9. Sory by title" +
+            "\n9. Sort by title" +
             "\n10. Sort by release date" +
             "\n11. Fill playlist from file" +
-            "\n12. Save playlist to file" +
+            "\n12. Save playlist" +
             "\n13. Terminate the program" +
             "\n-----------------------------------------\n");
 
-            //ensures the user chooses a number between 1-11
+            //ensures the user chooses a number between 1-13
             do
             {
                 try
@@ -298,7 +301,7 @@ namespace MP3_Tracker
                 }
                 catch (Exception)
                 {
-
+                    throw;
                 }
             } while (validGenre == false);            
 
@@ -574,6 +577,7 @@ namespace MP3_Tracker
                 Console.WriteLine("\nInvalid Genre");
             }
 
+            //calls the menu method
             Menu();
         }
 
@@ -586,6 +590,9 @@ namespace MP3_Tracker
             string artist = Console.ReadLine();
 
             userPlaylist.DisplaySongsByArtist(artist);
+
+            //calls the menu method
+            Menu();
         }
 
         /// <summary>
@@ -596,6 +603,7 @@ namespace MP3_Tracker
             userPlaylist.SortByTitle();
             Console.WriteLine("\nPlaylist has been sorted by title");
 
+            //calls the menu method
             Menu();
         }
 
@@ -607,6 +615,7 @@ namespace MP3_Tracker
             userPlaylist.SortByReleaseDate();
             Console.WriteLine("\nPlaylist has been sorted by release date");
 
+            //calls the menu method
             Menu();
         }
 
@@ -619,6 +628,9 @@ namespace MP3_Tracker
             string songTitle = Console.ReadLine();
 
             userPlaylist.SearchForTitle(songTitle);
+
+            //calls the menu method
+            Menu();
         }
 
         /// <summary>
@@ -649,9 +661,9 @@ namespace MP3_Tracker
             filePath = Console.ReadLine();
 
             userPlaylist.FillFromFile(filePath);
+            filePath = "";
 
-            Console.WriteLine("\nRead complete");
-
+            //calls the menu method
             Menu();
         }
 
@@ -660,8 +672,7 @@ namespace MP3_Tracker
         /// </summary>
         public static void WriteToFile()
         {
-
-
+            //if the filepath is "", the user did not use the FillPlaylistFromFile() method, so the program must ask the user for a file path
             if (filePath == "")
             {
                 Console.WriteLine("\nPlease input the file path including the file name (i.e. H:\\CSCI1260\\MP3 Tracker\\Playlist Data\\songs.txt)");
@@ -669,7 +680,7 @@ namespace MP3_Tracker
             }
             else
             {
-                char answer;
+                char answer = '\0';
 
                 do
                 {
@@ -693,23 +704,29 @@ namespace MP3_Tracker
             }
 
             userPlaylist.SaveToFile(filePath);
+            filePath = "";
 
-            Console.WriteLine("\nWrite complete");
-
+            //calls the menu method
             Menu();
         }
 
+        /// <summary>
+        /// if the SaveNeeded value in Playlist.cs does not equal false, executes the WriteToFile() method, saving the playlist to either
+        /// the last file path used, or the user's desired file path
+        /// </summary>
         public static void SavePlaylist()
         {
-            if (userPlaylist.SaveNeeded = true)
+            if (userPlaylist.SaveNeeded == true)
             {
-                userPlaylist.SaveToFile(filePath);
+                WriteToFile();
             }
             else 
             {
-                Console.Write("\nFile has not been modified since last save");
+                //if the SaveNeeded is not equal to true, alerts the user they have not altered the playlist and do not need to save
+                Console.WriteLine("\nFile has not been modified since last save");
             }
 
+            //calls the menu method
             Menu();
         }
 
