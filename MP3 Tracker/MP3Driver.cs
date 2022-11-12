@@ -98,25 +98,28 @@ namespace MP3_Tracker
                         RemoveFromPlaylist();
                         break;
                     case 7:
-                        DisplayByGenre();
+                        SearchByTitle();
                         break;
                     case 8:
-                        DisplayByArtist();
+                        DisplayByGenre();
                         break;
                     case 9:
-                        SortByTitle();
+                        DisplayByArtist();
                         break;
                     case 10:
-                        SortByReleaseDate();
+                        SortByTitle();
                         break;
                     case 11:
-                        FillPlaylistFromFile();
+                        SortByReleaseDate();
                         break;
                     case 12:
+                        FillPlaylistFromFile();
+                        break;
+                    case 13:
                         SavePlaylist();
                         break;
-                    //when the choice is 13, if the user hasn't saved, asks if they would like to quit, if no, returns them to the menu
-                    case 13:
+                    //when the choice is 14, if the user hasn't saved, asks if they would like to quit, if no, returns them to the menu
+                    case 14:
                         char reply = '\0';
 
                         if (userPlaylist.SaveNeeded == true)
@@ -147,13 +150,13 @@ namespace MP3_Tracker
                         {
                             Console.Write("\nInvalid input please reference the menu above: ");
                             choice = Int32.Parse(Console.ReadLine());
-                        } while (choice > 13 || choice <= 0);
+                        } while (choice > 14 || choice <= 0);
                         break;
                 }
-            } while (choice != 13);
+            } while (choice != 14);
 
-            //thanks the user and exits the program when they input 13
-            if (choice == 13)
+            //thanks the user and exits the program when they input 14
+            if (choice == 14)
             {
                 Console.WriteLine($"\nThank you for using the Funky Munky MP3 Tracker, {userName}! Have a great day!");
             }
@@ -200,16 +203,17 @@ namespace MP3_Tracker
             "\n4. Display your playlist" +
             "\n5. Edit a song in the playlist" +
             "\n6. Remove a song from the playlist" +
-            "\n7. Display songs of a specific Genre" +
-            "\n8. Display songs by a specific Artist" +
-            "\n9. Sort by title" +
-            "\n10. Sort by release date" +
-            "\n11. Fill playlist from file" +
-            "\n12. Save playlist" +
-            "\n13. Terminate the program" +
+            "\n7. Search for a song with a specfic title" +
+            "\n8. Display songs of a specific Genre" +
+            "\n9. Display songs by a specific Artist" +
+            "\n10. Sort by title" +
+            "\n11. Sort by release date" +
+            "\n12. Fill playlist from file" +
+            "\n13. Save playlist" +
+            "\n14. Terminate the program" +
             "\n-----------------------------------------\n");
 
-            //ensures the user chooses a number between 1-13
+            //ensures the user chooses a number between 1-14
             do
             {
                 try
@@ -217,7 +221,7 @@ namespace MP3_Tracker
                     Console.Write("\nPlease type the number corresponding to what you would like to do: ");
                     choice = Int32.Parse(Console.ReadLine());
 
-                    if (choice > 13 && choice < 0)
+                    if (choice > 14 && choice < 0)
                     {
                         Console.Write("\nThat is not an option, please reference the menu above: ");
                     }
@@ -226,7 +230,7 @@ namespace MP3_Tracker
                 {
                     Console.WriteLine("\nInvalid selection, reference the menu above: ");
                 }
-            } while (!(choice !<= 13 && choice > 0));
+            } while (!(choice !<= 14 && choice > 0));
         }
 
         /// <summary>
@@ -724,10 +728,10 @@ namespace MP3_Tracker
             {
                 //if the SaveNeeded is not equal to true, alerts the user they have not altered the playlist and do not need to save
                 Console.WriteLine("\nFile has not been modified since last save");
-            }
 
-            //calls the menu method
-            Menu();
+                //calls the menu method
+                Menu();
+            }
         }
 
         #endregion
