@@ -202,14 +202,17 @@ namespace MP3_Tracker
                         string line = sr.ReadLine();
                         string[] songInfo = line.Split("|");
 
+                        //tries to parse songInfo[4] to see if it can be parsed as type genre
                         Genre genre;
-                        if (Enum.TryParse(songInfo[4], out genre))
+                        if (Enum.TryParse(songInfo[4].ToUpper(), out genre))
                         {
                             MP3 song = new MP3(songInfo[0], songInfo[1], DateOnly.Parse(songInfo[2]), Int32.Parse(songInfo[3]),
                                         (Genre)Enum.Parse(typeof(Genre), songInfo[4].ToUpper()), decimal.Parse(songInfo[5]), double.Parse(songInfo[6]), songInfo[7]);
 
                             NewPlaylist.Add(song);
                         }
+                        //if songInfo[4] cant be parsed, the information gets replaced with the string OTHER, which will automatically 
+                        //set it to OTHER when parsing as type genre
                         else
                         {
                             songInfo[4] = "OTHER";
@@ -268,12 +271,12 @@ namespace MP3_Tracker
             }
             catch (Exception)
             {
-
                 throw;
             }
             finally
             {
                 //when there are no more lines for the StreamWriter to write, closes the file
+                //if SaveNeeded is currently true, set it to false
                 if (sw != null)
                 {
                     sw.Close();

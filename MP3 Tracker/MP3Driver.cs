@@ -565,6 +565,25 @@ namespace MP3_Tracker
         }
 
         /// <summary>
+        /// Displays the user's playlist
+        /// </summary>
+        public static void ShowPlaylist()
+        {
+            //as long as the playlist exists, uses the ToString() method to display the playlist's contents
+            if (userPlaylist.PlaylistCreator == "")
+            {
+                Console.WriteLine("\nA playlist does not currently exist, please create one and try again");
+            }
+            else
+            {
+                Console.WriteLine(userPlaylist.ToString());
+            }
+
+            //takes the user back to the menu
+            Menu();
+        }
+
+        /// <summary>
         /// Displays all songs in the user's playlist of a specific genre
         /// </summary>
         public static void DisplayByGenre()
@@ -634,25 +653,6 @@ namespace MP3_Tracker
             userPlaylist.SearchForTitle(songTitle);
 
             //calls the menu method
-            Menu();
-        }
-
-        /// <summary>
-        /// Displays the user's playlist
-        /// </summary>
-        public static void ShowPlaylist()
-        {
-            //as long as the playlist exists, uses the ToString() method to display the playlist's contents
-            if (userPlaylist.PlaylistCreator == "")
-            {
-                Console.WriteLine("\nA playlist does not currently exist, please create one and try again");
-            }
-            else
-            {
-                Console.WriteLine(userPlaylist.ToString());
-            }
-
-            //takes the user back to the menu
             Menu();
         }
 
