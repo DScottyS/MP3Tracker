@@ -120,30 +120,6 @@ namespace MP3_Tracker
                         break;
                     //when the choice is 14, if the user hasn't saved, asks if they would like to quit, if no, returns them to the menu
                     case 14:
-                        char reply = '\0';
-
-                        if (userPlaylist.SaveNeeded == true)
-                        {
-                            do
-                            {
-                                Console.Write("\nYou have not saved you current playlist yet, are you sure you would like to quit? Y/N: ");
-                                reply = Console.ReadLine().ToUpper()[0];
-
-                                if (reply == 'Y')
-                                {
-                                    break;
-                                }
-                                else if (reply == 'N')
-                                {
-                                    Console.WriteLine("Returning to menu");
-                                    Menu();
-                                }
-                                else
-                                {
-                                    Console.WriteLine($"You did not input a valid response, Would you like to quit the program without saving? Y/N");
-                                }
-                            } while (reply != 'Y' && reply != 'N');
-                        }
                         break;
                     default:
                         do
@@ -224,6 +200,34 @@ namespace MP3_Tracker
                     if (choice > 14 && choice < 0)
                     {
                         Console.Write("\nThat is not an option, please reference the menu above: ");
+                    }
+
+                    if (choice == 14)
+                    {
+                        char reply = '\0';
+
+                        if (userPlaylist.SaveNeeded == true)
+                        {
+                            do
+                            {
+                                Console.Write("\nYou have not saved you current playlist yet, are you sure you would like to quit? Y/N: ");
+                                reply = Console.ReadLine().ToUpper()[0];
+
+                                if (reply == 'Y')
+                                {
+                                    break;
+                                }
+                                else if (reply == 'N')
+                                {
+                                    Console.WriteLine("Returning to menu");
+                                    Menu();
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"You did not input a valid response, Would you like to quit the program without saving? Y/N");
+                                }
+                            } while (reply != 'Y' && reply != 'N');
+                        }
                     }
                 }
                 catch (FormatException)

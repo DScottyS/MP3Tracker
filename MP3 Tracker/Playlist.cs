@@ -224,9 +224,9 @@ namespace MP3_Tracker
                         }
                     }
                 }
-                catch (Exception)
+                catch (FormatException e)
                 {
-                    throw;
+                    Console.WriteLine($"\nA song in the file in {filePath} was not formatted correctly");
                 }
                 finally
                 {
@@ -309,7 +309,7 @@ namespace MP3_Tracker
             }
             else
             {
-                info += "\nThere are no songs currently in your playlist";
+                info += "\n\nThere are no songs currently in your playlist";
             }
 
             return info;
