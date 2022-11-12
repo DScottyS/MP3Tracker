@@ -59,7 +59,34 @@ namespace MP3_Tracker
                         DisplayASong();
                         break;
                     case 3:
-                        CreateAPlaylist();
+                        if (userPlaylist.SaveNeeded = true)
+                        {
+                            char answer = '\0';
+
+                            do
+                            {
+                                Console.Write("\nYou have not saved you current playlist yet, are you sure you would like to create a new one? Y/N: ");
+                                answer = Console.ReadLine().ToUpper()[0];
+
+                                if (answer == 'Y')
+                                {
+                                    CreateAPlaylist();
+                                }
+                                else if (answer == 'N')
+                                {
+                                    Console.WriteLine("Returning to menu");
+                                    Menu();
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"You did not input a valid response, Would you like to create a new playlist without saving? Y/N");
+                                }
+                            } while (answer != 'Y' && answer != 'N');
+                        }
+                        else
+                        {
+                            CreateAPlaylist();
+                        }
                         break;
                     case 4:
                         ShowPlaylist();
@@ -88,8 +115,29 @@ namespace MP3_Tracker
                     case 12:
                         WriteToFile();
                         break;
-                    //when the choice is 13, calls no method and breaks, causing the program to end
+                    //when the choice is 13, if the user hasn't saved, asks if they would like to quit, if no, returns them to the menu
                     case 13:
+                        char reply = '\0';
+
+                        do
+                        {
+                            Console.Write("\nYou have not saved you current playlist yet, are you sure you would like to quit? Y/N: ");
+                            reply = Console.ReadLine().ToUpper()[0];
+
+                            if (reply == 'Y')
+                            {
+                                break;
+                            }
+                            else if (reply == 'N')
+                            {
+                                Console.WriteLine("Returning to menu");
+                                Menu();
+                            }
+                            else
+                            {
+                                Console.WriteLine($"You did not input a valid response, Would you like to quit the program without saving? Y/N");
+                            }
+                        } while (reply != 'Y' && reply != 'N');
                         break;
                     default:
                         do
@@ -520,8 +568,6 @@ namespace MP3_Tracker
                 Genre genre = (Genre)Enum.Parse(typeof(Genre), Console.ReadLine().ToUpper());
 
                 userPlaylist.DisplaySongsByGenre(genre);
-
-
             }
             catch (ArgumentException)
             {
@@ -569,7 +615,7 @@ namespace MP3_Tracker
         /// </summary>
         public static void SearchByTitle()
         {
-            Console.Write("\nTitle of song you wan: ");
+            Console.Write("\nPlease enter the title of the song you would like to search for: ");
             string songTitle = Console.ReadLine();
 
             userPlaylist.SearchForTitle(songTitle);
@@ -599,7 +645,7 @@ namespace MP3_Tracker
         /// </summary>
         public static void FillPlaylistFromFile()
         {
-            Console.WriteLine("\nPlease input the file path including the file name (i.e. H:\\CSCI1260\\MP3 Tracker\\songs.txt)");
+            Console.WriteLine("\nPlease input the file path including the file name (i.e. H:\\CSCI1260\\MP3 Tracker\\Playlist Data\\songs.txt)");
             filePath = Console.ReadLine();
 
             userPlaylist.FillFromFile(filePath);
@@ -618,15 +664,17 @@ namespace MP3_Tracker
 
             if (filePath == "")
             {
-                Console.WriteLine("\nPlease input the file path including the file name (i.e. H:\\CSCI1260\\MP3 Tracker\\songs.txt)");
+                Console.WriteLine("\nPlease input the file path including the file name (i.e. H:\\CSCI1260\\MP3 Tracker\\Playlist Data\\songs.txt)");
                 filePath = Console.ReadLine();
             }
             else
             {
+                char answer;
+
                 do
                 {
                     Console.Write($"\nWould you like to save to the file in {filePath}? Y/N: ");
-                    char answer = Console.ReadLine().ToUpper()[0];
+                    answer = Console.ReadLine().ToUpper()[0];
 
                     if (answer == 'Y')
                     {
@@ -643,10 +691,6 @@ namespace MP3_Tracker
                     }
                 } while (answer != 'Y' && answer != 'N');
             }
-
-
-
-
 
             userPlaylist.SaveToFile(filePath);
 

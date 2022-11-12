@@ -64,6 +64,8 @@ namespace MP3_Tracker
         public void AddToPlaylist(MP3 songToAdd)
         {
             NewPlaylist.Add(songToAdd);
+
+            SaveNeeded = true;
         }
 
         /// <summary>
@@ -99,11 +101,17 @@ namespace MP3_Tracker
         public void RemoveSong(int songNum)
         {
             NewPlaylist.RemoveAt(songNum);
+
+            SaveNeeded = true;
         }
 
+        /// <summary>
+        /// allows the user to search for songs of a given title
+        /// </summary>
+        /// <param name="title">title of the song the user wishes display</param>
         public void SearchForTitle(string title)
         {
-            NewPlaylist.Equals(title);
+            
         }
 
         /// <summary>
@@ -112,6 +120,8 @@ namespace MP3_Tracker
         /// <param name="genre">the Genre of songs the user would like to display</param>
         public void DisplaySongsByGenre(Genre genre)
         {
+            NewPlaylist = new List<MP3>();
+
             //https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.where?view=net-6.0
             IEnumerable<MP3> genrePlaylist = NewPlaylist.Where(song => song.Genre == genre);
 
@@ -142,6 +152,8 @@ namespace MP3_Tracker
         public void SortByTitle()
         {
             NewPlaylist.Sort((x, y) => x.Title.CompareTo(y.Title));
+
+            SaveNeeded = true;
         }
 
         /// <summary>
@@ -150,45 +162,78 @@ namespace MP3_Tracker
         public void SortByReleaseDate()
         { 
             NewPlaylist.Sort((x, y) => x.ReleaseDate.CompareTo(y.ReleaseDate));
+
+            SaveNeeded = true;
         }
 
+        /// <summary>
+        /// allows the user to load a pre-existing playlist from a file
+        /// </summary>
+        /// <param name="filePath">path to the file the user wishes to write to</param>
         public void FillFromFile(string filePath)
         {
-            StreamReader sr = new StreamReader(filePath);
-
             try
             {
-                while (sr.Peek() != -1)
+                StreamReader sr = new StreamReader(filePath);
+
+                try
                 {
-                    string line = sr.ReadLine();
-                    string[] songInfo = line.Split("|");
 
-                    MP3 song = new MP3(songInfo[0], songInfo[1], DateOnly.Parse(songInfo[2]), Int32.Parse(songInfo[3]), 
-                        (Genre)Enum.Parse(typeof(Genre), songInfo[4].ToUpper()), decimal.Parse(songInfo[5]), double.Parse(songInfo[6]), songInfo[7]);
+                    string firstLine = sr.ReadLine();
+                    string[] playlistInfo = firstLine.Split("|");
 
-                    NewPlaylist.Add(song);
+                    PlaylistName = playlistInfo[0];
+                    PlaylistCreator = playlistInfo[1];
+                    CreationDate = DateOnly.Parse(playlistInfo[2]);
+
+                    sr.ReadLine();
+
+                    while (sr.Peek() != -1)
+                    {
+
+                        string line = sr.ReadLine();
+                        string[] songInfo = line.Split("|");
+
+                        /*if ()
+                        {
+                            songInfo[4] = "OTHER";
+                        }*/
+
+                        MP3 song = new MP3(songInfo[0], songInfo[1], DateOnly.Parse(songInfo[2]), Int32.Parse(songInfo[3]),
+                                    (Genre)Enum.Parse(typeof(Genre), songInfo[4].ToUpper()), decimal.Parse(songInfo[5]), double.Parse(songInfo[6]), songInfo[7]);
+
+                        NewPlaylist.Add(song);
+                    }
+                }
+                catch (ArgumentException e)
+                {
+                    Console.WriteLine("\nThere is an invalid Genre in the file");
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+                finally
+                {
+                    if (sr != null)
+                    {
+                        sr.Close();
+                    }
                 }
             }
-            catch (ArgumentException e)
+            catch (FileNotFoundException)
             {
-                Console.WriteLine("\nThere is an invalid Genre in the file");
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            finally
-            {
-                if (sr != null)
-                {
-                    sr.Close();
-                }
+                Console.WriteLine($"\nThe file at file path {filePath} does not exist");
             }
 
             SaveNeeded = true;
         }
 
+        /// <summary>
+        /// allows the user to save their current playlist to a txt file
+        /// </summary>
+        /// <param name="filePath">path to the file the user wishes to write to</param>
         public void SaveToFile(string filePath)
         {
             StreamWriter sw = new StreamWriter(filePath);
@@ -201,6 +246,7 @@ namespace MP3_Tracker
                          + "|" + NewPlaylist.ElementAt(i).PlaybackTime + "|" + NewPlaylist.ElementAt(i).Genre + "|" + NewPlaylist.ElementAt(i).DownloadCost
                          + "|" + NewPlaylist.ElementAt(i).FileSizeMB + "|" + NewPlaylist.ElementAt(i).FilePath);
                 }
+
             }
             catch (Exception)
             {
@@ -215,7 +261,6 @@ namespace MP3_Tracker
                 }
             }
 
-            SaveNeeded = true;
         }
 
         /// <summary>
