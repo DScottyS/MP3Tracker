@@ -199,23 +199,30 @@ namespace MP3_Tracker
                     //reads each line, creates a new MP3, and fills it with the appropriate information for the rest of the file until there is nothing left to read
                     while (sr.Peek() != -1)
                     {
-
                         string line = sr.ReadLine();
                         string[] songInfo = line.Split("|");
 
-                        MP3 song = new MP3(songInfo[0], songInfo[1], DateOnly.Parse(songInfo[2]), Int32.Parse(songInfo[3]),
-                                    (Genre)Enum.Parse(typeof(Genre), songInfo[4].ToUpper()), decimal.Parse(songInfo[5]), double.Parse(songInfo[6]), songInfo[7]);
+                        Genre genre;
+                        if (Enum.TryParse(songInfo[4], out genre))
+                        {
+                            MP3 song = new MP3(songInfo[0], songInfo[1], DateOnly.Parse(songInfo[2]), Int32.Parse(songInfo[3]),
+                                        (Genre)Enum.Parse(typeof(Genre), songInfo[4].ToUpper()), decimal.Parse(songInfo[5]), double.Parse(songInfo[6]), songInfo[7]);
 
-                        NewPlaylist.Add(song);
+                            NewPlaylist.Add(song);
+                        }
+                        else
+                        {
+                            songInfo[4] = "OTHER";
+
+                            MP3 song = new MP3(songInfo[0], songInfo[1], DateOnly.Parse(songInfo[2]), Int32.Parse(songInfo[3]),
+                                        (Genre)Enum.Parse(typeof(Genre), songInfo[4].ToUpper()), decimal.Parse(songInfo[5]), double.Parse(songInfo[6]), songInfo[7]);
+
+                            NewPlaylist.Add(song);
+                        }
                     }
-                }
-                catch (ArgumentException e)
-                {
-                    Console.WriteLine("\nThere is an invalid Genre in the file");
                 }
                 catch (Exception)
                 {
-
                     throw;
                 }
                 finally

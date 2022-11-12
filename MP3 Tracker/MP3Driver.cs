@@ -624,7 +624,7 @@ namespace MP3_Tracker
         }
 
         /// <summary>
-        /// WIP, will display all songs in the user's playlist with a specific title
+        /// will display all songs in the user's playlist with a specific title, currently input must be the full title of the song
         /// </summary>
         public static void SearchByTitle()
         {
