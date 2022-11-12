@@ -92,6 +92,8 @@ namespace MP3_Tracker
             {
                 Console.WriteLine($"The song at position {songNum} does not exist");
             }
+
+            SaveNeeded = true;
         }
 
         /// <summary>
@@ -194,11 +196,6 @@ namespace MP3_Tracker
                         string line = sr.ReadLine();
                         string[] songInfo = line.Split("|");
 
-                        /*if ()
-                        {
-                            songInfo[4] = "OTHER";
-                        }*/
-
                         MP3 song = new MP3(songInfo[0], songInfo[1], DateOnly.Parse(songInfo[2]), Int32.Parse(songInfo[3]),
                                     (Genre)Enum.Parse(typeof(Genre), songInfo[4].ToUpper()), decimal.Parse(songInfo[5]), double.Parse(songInfo[6]), songInfo[7]);
 
@@ -226,8 +223,6 @@ namespace MP3_Tracker
             {
                 Console.WriteLine($"\nThe file at file path {filePath} does not exist");
             }
-
-            SaveNeeded = true;
         }
 
         /// <summary>
@@ -240,13 +235,15 @@ namespace MP3_Tracker
 
             try
             {
+                sw.WriteLine(PlaylistName + "|" + PlaylistCreator + "|" + CreationDate);
+                sw.WriteLine();
+
                 for (int i = 0; i < NewPlaylist.Count; i++)
                 {
                     sw.WriteLine(NewPlaylist.ElementAt(i).Title + "|" + NewPlaylist.ElementAt(i).Artist + "|" + NewPlaylist.ElementAt(i).ReleaseDate
                          + "|" + NewPlaylist.ElementAt(i).PlaybackTime + "|" + NewPlaylist.ElementAt(i).Genre + "|" + NewPlaylist.ElementAt(i).DownloadCost
                          + "|" + NewPlaylist.ElementAt(i).FileSizeMB + "|" + NewPlaylist.ElementAt(i).FilePath);
                 }
-
             }
             catch (Exception)
             {
@@ -260,7 +257,6 @@ namespace MP3_Tracker
                     sw.Close();
                 }
             }
-
         }
 
         /// <summary>

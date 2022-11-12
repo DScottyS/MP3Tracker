@@ -699,6 +699,20 @@ namespace MP3_Tracker
             Menu();
         }
 
+        public static void SavePlaylist()
+        {
+            if (userPlaylist.SaveNeeded = true)
+            {
+                userPlaylist.SaveToFile(filePath);
+            }
+            else 
+            {
+                Console.Write("\nFile has not been modified since last save");
+            }
+
+            Menu();
+        }
+
         #endregion
     }
 }
